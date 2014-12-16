@@ -1,0 +1,35 @@
+{
+    "name": "folklore/eloquent-mediatheque",
+    "description": "Laravel 4 package to add media relations to Eloquent Models",
+    "keywords": ["laravel","audio","image","video","text","eloquent","content","cms","orm"],
+    "homepage": "http://github.com/Folkloreatelier/eloquent-mediatheque",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Folklore",
+            "email": "info@atelierfolklore.ca",
+            "homepage": "http://atelierfolklore.ca"
+        },
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@atelierfolklore.ca",
+            "homepage": "http://mongo.ca",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
+        "folklore/eloquent-localizable": "0.1.*",
+        "cviebrock/eloquent-sluggable": "2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Folklore\\EloquentMediatheque": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
