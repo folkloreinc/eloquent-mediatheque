@@ -26,11 +26,9 @@ class Text extends Model implements SluggableInterface {
         'save_to'    => 'slug',
     );
     
-    protected function getMediathequeTypeAttribute()
-    {
-        return 'text';
-    }
-    
+    /**
+     * Relationships
+     */
     public function pictures()
     {
         $morphName = 'writable';
@@ -63,20 +61,38 @@ class Text extends Model implements SluggableInterface {
                         ->withPivot($morphName.'_position', $morphName.'_order');
         return $query;
     }
-        
+    
+    /**
+     * Collections
+     */
     public function newCollection(array $models = array())
     {
         return new TextsCollection($models);
     }
     
+    /**
+     * Locale
+     */
     protected function getLocaleModelClass()
     {
         return 'Folklore\EloquentMediatheque\Models\TextLocale';
     }
     
+    /**
+     * Special getters
+     */
     public function getContent($locale = null)
     {
         return $locale && $this->locales->{$locale} && !empty($this->locales->{$locale}->content) ? $this->locales->{$locale}->content:$this->content;
+    }
+    
+    /**
+     * Accessors and mutators
+     */
+     
+    protected function getMediathequeTypeAttribute()
+    {
+        return 'text';
     }
     
     protected function getFieldsAttribute($value)
@@ -108,5 +124,23 @@ class Text extends Model implements SluggableInterface {
                 $this->fields = array_keys($value);
             }
         }
+    }
+    
+    /**
+     * Query scopes
+     */
+    public function scopeSearch($query, $text)
+    {
+        $query->where(function($query) use ($text) {
+				$query->where(function($query) use ($text) {
+				$query->where('slug', 'LIKE', '%'.$text.'%');
+				$query->orWhere('content', 'LIKE', '%'.$text.'%');
+			});
+			$query->orWhereHas('locales', function($query) use ($text) {
+				$query->orWhere('content', 'LIKE', '%'.$text.'%');
+			});
+		});
+        
+        return $query;
     }
 }

@@ -34,11 +34,17 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
         'save_to'    => 'slug',
     );
     
+    /**
+     * Accessors and mutators
+     */
     protected function getMediathequeTypeAttribute()
     {
         return 'picture';
     }
     
+    /**
+     * Fileable
+     */
     public function deleteFile()
     {
         $path = \Config::get('eloquent-mediatheque::fileable.path');
@@ -56,6 +62,19 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
             'width' => $width,
             'height' => $height
         );
+    }
+    
+    /**
+     * Query scopes
+     */
+    public function scopeSearch($query, $text)
+    {
+        $query->where(function($query) use ($text) {
+			$query->where('slug', 'LIKE', '%'.$text.'%');
+			$query->orWhere('filename', 'LIKE', '%'.$text.'%');
+			$query->orWhere('original', 'LIKE', '%'.$text.'%');
+		});
+        return $query;
     }
 
 

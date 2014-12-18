@@ -24,6 +24,9 @@ class TextLocale extends Model {
         return new LocalesCollection($models);
     }
     
+    /**
+     * Accessors and mutators
+     */
     protected function getFieldsAttribute($value)
     {
         if(empty($value))
@@ -53,5 +56,17 @@ class TextLocale extends Model {
                 $this->fields = array_keys($value);
             }
         }
+    }
+    
+    /**
+     * Query scopes
+     */
+    public function scopeSearch($query, $text)
+    {
+        $query->where(function($query) use ($text) {
+			$query->where('content', 'LIKE', '%'.$text.'%');
+		});
+        
+        return $query;
     }
 }

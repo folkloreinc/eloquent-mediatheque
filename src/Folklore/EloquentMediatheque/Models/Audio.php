@@ -33,8 +33,24 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         'save_to'    => 'slug',
     );
     
+    /**
+     * Accessors and mutators
+     */
     protected function getMediathequeTypeAttribute()
     {
         return 'audio';
+    }
+    
+    /**
+     * Query scopes
+     */
+    public function scopeSearch($query, $text)
+    {
+        $query->where(function($query) use ($text) {
+			$query->where('slug', 'LIKE', '%'.$text.'%');
+			$query->orWhere('filename', 'LIKE', '%'.$text.'%');
+			$query->orWhere('original', 'LIKE', '%'.$text.'%');
+		});
+        return $query;
     }
 }

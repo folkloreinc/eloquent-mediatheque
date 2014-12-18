@@ -35,16 +35,35 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         'on_update' => true
     );
     
+    /**
+     * Accessors and mutators
+     */
     protected function getMediathequeTypeAttribute()
     {
         return 'video';
     }
     
+    /**
+     * Fileable
+     */
     public static function getSizeFromFile($path)
     {
         return array(
             'width' => 0,
             'height' => 0
         );
+    }
+    
+    /**
+     * Query scopes
+     */
+    public function scopeSearch($query, $text)
+    {
+        $query->where(function($query) use ($text) {
+			$query->where('slug', 'LIKE', '%'.$text.'%');
+			$query->orWhere('filename', 'LIKE', '%'.$text.'%');
+			$query->orWhere('original', 'LIKE', '%'.$text.'%');
+		});
+        return $query;
     }
 }
