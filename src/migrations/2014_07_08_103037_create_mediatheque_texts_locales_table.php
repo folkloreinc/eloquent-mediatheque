@@ -21,6 +21,10 @@ class CreateMediathequeTextsLocalesTable extends Migration {
 			$table->string('fields');
 			$table->boolean('is_json');
 			$table->timestamps();
+			
+			$table->index('text_id');
+			$table->index('locale');
+			$table->index('text');
 		});
 	}
 

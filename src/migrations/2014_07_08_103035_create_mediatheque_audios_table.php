@@ -24,6 +24,7 @@ class CreateMediathequeAudiosTable extends Migration {
 			$table->timestamps();
 			
 			$table->index('filename');
+			$table->index('original');
 			$table->unique('slug');
 		});
 	}
