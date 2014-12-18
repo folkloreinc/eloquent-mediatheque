@@ -22,7 +22,6 @@ class CreateMediathequeTextsTable extends Migration {
 			$table->timestamps();
 			
 			$table->unique('slug');
-			$table->index('content');
 		});
 	}
 

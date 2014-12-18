@@ -24,7 +24,6 @@ class CreateMediathequeTextsLocalesTable extends Migration {
 			
 			$table->index('text_id');
 			$table->index('locale');
-			$table->index('content');
 		});
 	}
 
