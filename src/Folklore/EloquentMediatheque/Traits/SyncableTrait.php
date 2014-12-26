@@ -27,7 +27,17 @@ trait SyncableTrait {
                 }
                 else
                 {
-                    $model = isset($item['id']) && !empty($item['id']) ? $className::find($item['id']):null;
+                    $model = null;
+                    if(isset($item['id']) && !empty($item['id']))
+                    {
+                        $model = $className::find($item['id']);
+                    }
+                    else if(isset($item['slug']) && !empty($item['slug']))
+                    {
+                        $model = $className::where('slug',$item['slug'])
+                                            ->first();
+                    }
+                    
                     if(!$model)
                     {
                         $model = new $className();
