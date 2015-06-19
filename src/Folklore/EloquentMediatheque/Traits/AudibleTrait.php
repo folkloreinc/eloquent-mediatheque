@@ -16,7 +16,7 @@ trait AudibleTrait {
         $morphName = 'audible';
         $key = 'audio_id';
         $model = 'Folklore\EloquentMediatheque\Models\Audio';
-        $table = \Config::get('eloquent-mediatheque::table_prefix').$morphName.'s';
+        $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');

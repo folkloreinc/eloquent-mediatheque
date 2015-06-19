@@ -16,7 +16,7 @@ trait FilmableTrait {
         $morphName = 'filmable';
         $key = 'video_id';
         $model = 'Folklore\EloquentMediatheque\Models\Video';
-        $table = \Config::get('eloquent-mediatheque::table_prefix').$morphName.'s';
+        $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');

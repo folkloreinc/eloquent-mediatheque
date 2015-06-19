@@ -6,7 +6,7 @@ class Model extends Eloquent
 {
     public function __construct(array $attributes = array())
     {
-        $this->table = \Config::get('eloquent-mediatheque::table_prefix').$this->table;
+        $this->table = config('mediatheque.table_prefix').$this->table;
 
         parent::__construct($attributes);
     }

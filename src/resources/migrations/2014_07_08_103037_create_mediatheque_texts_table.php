@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMediathequeTextsLocalesTable extends Migration {
+class CreateMediathequeTextsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,18 +12,16 @@ class CreateMediathequeTextsLocalesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(Config::get('eloquent-mediatheque::table_prefix').'texts_locales', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'texts', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('text_id')->unsigned();
-			$table->string('locale',5);
+			$table->string('slug');
 			$table->text('content');
 			$table->string('fields');
 			$table->boolean('is_json');
 			$table->timestamps();
 			
-			$table->index('text_id');
-			$table->index('locale');
+			$table->unique('slug');
 		});
 	}
 
@@ -34,7 +32,7 @@ class CreateMediathequeTextsLocalesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(Config::get('eloquent-mediatheque::table_prefix').'texts_locales');
+		Schema::drop(config('mediatheque.table_prefix').'texts');
 	}
 
 }

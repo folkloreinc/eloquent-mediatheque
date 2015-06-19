@@ -11,7 +11,7 @@ trait UploadableTrait {
 		$file['mime'] = $uploadedFile->getMimeType();
         
         //Get temp folder and name
-        $tempFolder = \Config::get('eloquent-mediatheque::uploadable.tmp_path');
+        $tempFolder = config('mediatheque.uploadable.tmp_path');
         $tempFilename = uniqid();
         
         //Create directory if doesn't exist
@@ -39,8 +39,8 @@ trait UploadableTrait {
 	public function upload($uploadedFile) {
 
         //Get config
-        $extensions = \Config::get('eloquent-mediatheque::mime_to_extension');
-		$destinationPath = \Config::get('eloquent-mediatheque::upload_path');
+        $extensions = config('mediatheque.mime_to_extension');
+		$destinationPath = config('mediatheque.upload_path');
 
 		//Get infos
         $file = array();

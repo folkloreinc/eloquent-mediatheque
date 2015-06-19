@@ -16,7 +16,7 @@ trait PicturableTrait {
         $morphName = 'picturable';
         $key = 'picture_id';
         $model = 'Folklore\EloquentMediatheque\Models\Picture';
-        $table = \Config::get('eloquent-mediatheque::table_prefix').$morphName.'s';
+        $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');

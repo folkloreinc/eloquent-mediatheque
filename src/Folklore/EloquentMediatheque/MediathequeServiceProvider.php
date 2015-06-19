@@ -20,10 +20,18 @@ class MediathequeServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('folklore/eloquent-mediatheque','eloquent-mediatheque');
+		$configPath = __DIR__.'/../../resources/config/config.php';
+		$migrationsPath = __DIR__.'/../../resources/migrations/';
 		
-		$this->app->register('Cviebrock\EloquentSluggable\SluggableServiceProvider');
+		$this->mergeConfigFrom($configPath, 'mediatheque');
 		
+		$this->publishes([
+	        $configPath => config_path('mediatheque.php'),
+	    ], 'config');
+		
+		$this->publishes([
+	        $migrationsPath => database_path('/migrations')
+	    ], 'migrations');
 	}
 
 	/**

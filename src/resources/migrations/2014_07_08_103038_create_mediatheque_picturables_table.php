@@ -12,7 +12,7 @@ class CreateMediathequePicturablesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(Config::get('eloquent-mediatheque::table_prefix').'picturables', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'picturables', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('picture_id')->unsigned();
@@ -36,7 +36,7 @@ class CreateMediathequePicturablesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(Config::get('eloquent-mediatheque::table_prefix').'picturables');
+		Schema::drop(config('mediatheque.table_prefix').'picturables');
 	}
 
 }

@@ -12,7 +12,7 @@ class CreateMediathequeAudiblesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(Config::get('eloquent-mediatheque::table_prefix').'audibles', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'audibles', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('audio_id')->unsigned();
@@ -35,7 +35,7 @@ class CreateMediathequeAudiblesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(Config::get('eloquent-mediatheque::table_prefix').'audibles');
+		Schema::drop(config('mediatheque.table_prefix').'audibles');
 	}
 
 }

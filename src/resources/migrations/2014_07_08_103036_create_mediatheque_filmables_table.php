@@ -12,7 +12,7 @@ class CreateMediathequeFilmablesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(Config::get('eloquent-mediatheque::table_prefix').'filmables', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'filmables', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('video_id')->unsigned();
@@ -36,7 +36,7 @@ class CreateMediathequeFilmablesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(Config::get('eloquent-mediatheque::table_prefix').'filmables');
+		Schema::drop(config('mediatheque.table_prefix').'filmables');
 	}
 
 }

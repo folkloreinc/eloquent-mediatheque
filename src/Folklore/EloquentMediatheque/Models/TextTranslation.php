@@ -1,10 +1,8 @@
 <?php namespace Folklore\EloquentMediatheque\Models;
 
-use Folklore\EloquentLocalizable\LocalesCollection;
+class TextTranslation extends Model {
 
-class TextLocale extends Model {
-
-    protected $table = 'texts_locales';
+    protected $table = 'texts_translations';
     
     protected $visible = array(
         'locale',
@@ -18,11 +16,6 @@ class TextLocale extends Model {
         'fields',
         'is_json'
     );
-        
-    public function newCollection(array $models = array())
-    {
-        return new LocalesCollection($models);
-    }
     
     /**
      * Accessors and mutators

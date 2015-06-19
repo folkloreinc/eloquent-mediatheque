@@ -12,7 +12,7 @@ class CreateMediathequeWritablesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(Config::get('eloquent-mediatheque::table_prefix').'writables', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'writables', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('text_id')->unsigned();
@@ -36,7 +36,7 @@ class CreateMediathequeWritablesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(Config::get('eloquent-mediatheque::table_prefix').'writables');
+		Schema::drop(config('mediatheque.table_prefix').'writables');
 	}
 
 }

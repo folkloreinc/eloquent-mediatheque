@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMediathequePicturesTable extends Migration {
+class CreateMediathequeAudiosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateMediathequePicturesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(Config::get('eloquent-mediatheque::table_prefix').'pictures', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'audios', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('slug');
@@ -20,8 +20,7 @@ class CreateMediathequePicturesTable extends Migration {
 			$table->string('original');
 			$table->string('mime',50);
 			$table->integer('size');
-			$table->smallInteger('width')->unsigned();
-			$table->smallInteger('height')->unsigned();
+			$table->integer('duration')->unsigned();
 			$table->timestamps();
 			
 			$table->index('filename');
@@ -37,7 +36,7 @@ class CreateMediathequePicturesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(Config::get('eloquent-mediatheque::table_prefix').'pictures');
+		Schema::drop(config('mediatheque.table_prefix').'audios');
 	}
 
 }

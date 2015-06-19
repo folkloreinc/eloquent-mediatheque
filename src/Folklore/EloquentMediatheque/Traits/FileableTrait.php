@@ -67,8 +67,8 @@ trait FileableTrait {
     public function setFile($path, $file = array())
     {
         //Get config
-        $extensions = \Config::get('eloquent-mediatheque::fileable.mime_to_extension');
-		$destinationPath = \Config::get('eloquent-mediatheque::fileable.path');
+        $extensions = config('mediatheque.fileable.mime_to_extension');
+		$destinationPath = config('mediatheque.fileable.path');
         
         //Get file info
         $defaultFile = array();
@@ -138,7 +138,7 @@ trait FileableTrait {
     
     public function deleteFile()
     {
-        $path = \Config::get('eloquent-mediatheque::fileable.path');
+        $path = config('mediatheque.fileable.path');
         $path = $path.'/'.$model->filename;
         if(file_exists($path))
         {

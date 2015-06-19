@@ -1,13 +1,15 @@
 <?php namespace Folklore\EloquentMediatheque\Models;
 
-use Folklore\EloquentLocalizable\LocalizableTrait;
 use Folklore\EloquentMediatheque\Models\Collections\TextsCollection;
+
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
+use Dimsav\Translatable\Translatable;
+
 class Text extends Model implements SluggableInterface {
     
-    use LocalizableTrait, SluggableTrait;
+    use Translatable, SluggableTrait;
 
     protected $table = 'texts';
 
@@ -16,6 +18,12 @@ class Text extends Model implements SluggableInterface {
         'fields',
         'is_json'
     );
+    
+    public $translatedAttributes = [
+        'content',
+        'fields',
+        'is_json'
+    ];
     
     protected $appends = array(
         'mediatheque_type'
@@ -33,7 +41,7 @@ class Text extends Model implements SluggableInterface {
     {
         $morphName = 'writable';
         $model = 'Folklore\EloquentMediatheque\Models\Picture';
-        $table = \Config::get('eloquent-mediatheque::table_prefix').'writables';
+        $table = config('mediatheque.table_prefix').'writables';
         $query = $this->morphedByMany($model, $morphName, $table)
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
@@ -44,7 +52,7 @@ class Text extends Model implements SluggableInterface {
     {
         $morphName = 'writable';
         $model = 'Folklore\EloquentMediatheque\Models\Audio';
-        $table = \Config::get('eloquent-mediatheque::table_prefix').'writables';
+        $table = config('mediatheque.table_prefix').'writables';
         $query = $this->morphedByMany($model, $morphName, $table)
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
@@ -55,7 +63,7 @@ class Text extends Model implements SluggableInterface {
     {
         $morphName = 'writable';
         $model = 'Folklore\EloquentMediatheque\Models\Video';
-        $table = \Config::get('eloquent-mediatheque::table_prefix').'writables';
+        $table = config('mediatheque.table_prefix').'writables';
         $query = $this->morphedByMany($model, $morphName, $table)
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
@@ -68,14 +76,6 @@ class Text extends Model implements SluggableInterface {
     public function newCollection(array $models = array())
     {
         return new TextsCollection($models);
-    }
-    
-    /**
-     * Locale
-     */
-    protected function getLocaleModelClass()
-    {
-        return 'Folklore\EloquentMediatheque\Models\TextLocale';
     }
     
     /**
@@ -132,11 +132,8 @@ class Text extends Model implements SluggableInterface {
     public function scopeSearch($query, $text)
     {
         $query->where(function($query) use ($text) {
-				$query->where(function($query) use ($text) {
+			$query->where(function($query) use ($text) {
 				$query->where('slug', 'LIKE', '%'.$text.'%');
-				$query->orWhere('content', 'LIKE', '%'.$text.'%');
-			});
-			$query->orWhereHas('locales', function($query) use ($text) {
 				$query->orWhere('content', 'LIKE', '%'.$text.'%');
 			});
 		});
