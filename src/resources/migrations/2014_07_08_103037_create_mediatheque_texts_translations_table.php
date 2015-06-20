@@ -18,8 +18,6 @@ class CreateMediathequeTextsTranslationsTable extends Migration {
 			$table->integer('text_id')->unsigned();
 			$table->string('locale',5);
 			$table->text('content');
-			$table->string('fields');
-			$table->boolean('is_json');
 			$table->timestamps();
 			
 			$table->index('text_id');

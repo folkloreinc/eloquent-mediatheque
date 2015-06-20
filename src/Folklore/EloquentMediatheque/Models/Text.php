@@ -14,15 +14,11 @@ class Text extends Model implements SluggableInterface {
     protected $table = 'texts';
 
     protected $fillable = array(
-        'content',
-        'fields',
-        'is_json'
+        'fields'
     );
     
     public $translatedAttributes = [
-        'content',
-        'fields',
-        'is_json'
+        'content'
     ];
     
     protected $appends = array(
@@ -33,6 +29,10 @@ class Text extends Model implements SluggableInterface {
         'build_from' => 'mediatheque_type',
         'save_to'    => 'slug',
     );
+    
+    protected $casts = [
+        'fields' => 'object'
+    ];
     
     /**
      * Relationships
@@ -79,54 +79,6 @@ class Text extends Model implements SluggableInterface {
     }
     
     /**
-     * Special getters
-     */
-    public function getContent($locale = null)
-    {
-        return $locale && $this->locales->{$locale} && !empty($this->locales->{$locale}->content) ? $this->locales->{$locale}->content:$this->content;
-    }
-    
-    /**
-     * Accessors and mutators
-     */
-     
-    protected function getMediathequeTypeAttribute()
-    {
-        return 'text';
-    }
-    
-    protected function getFieldsAttribute($value)
-    {
-        if(empty($value))
-        {
-            return array();
-        }
-        return is_string($value) ? json_decode($value,true):$value;
-    }
-    
-    protected function setFieldsAttribute($value)
-    {
-        $this->attributes['fields'] = is_array($value) ? json_encode($value):$value;
-    }
-    
-    protected function getContentAttribute($value)
-    {
-        return (int)$this->is_json === 1 && is_string($value) ? json_decode($value):$value;
-    }
-    
-    protected function setContentAttribute($value)
-    {
-        if(is_array($value))
-        {
-            $this->attributes['content'] = json_encode($value);
-            $this->is_json = 1;
-            if(!$this->fields || empty($this->fields)) {
-                $this->fields = array_keys($value);
-            }
-        }
-    }
-    
-    /**
      * Query scopes
      */
     public function scopeSearch($query, $text)
@@ -134,7 +86,6 @@ class Text extends Model implements SluggableInterface {
         $query->where(function($query) use ($text) {
 			$query->where(function($query) use ($text) {
 				$query->where('slug', 'LIKE', '%'.$text.'%');
-				$query->orWhere('content', 'LIKE', '%'.$text.'%');
 			});
 		});
         

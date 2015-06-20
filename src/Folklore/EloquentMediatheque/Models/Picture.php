@@ -11,7 +11,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Picture extends Model implements SluggableInterface, FileableInterface, SizeableInterface {
     
-    use WritableTrait, SizeableTrait, FileableTrait, UploadableTrait;
+    use WritableTrait, SizeableTrait, FileableTrait, UploadableTrait, SluggableTrait;
 
     protected $table = 'pictures';
 

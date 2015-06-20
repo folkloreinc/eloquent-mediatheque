@@ -16,9 +16,7 @@ class CreateMediathequeTextsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('slug');
-			$table->text('content');
-			$table->string('fields');
-			$table->boolean('is_json');
+			$table->text('fields');
 			$table->timestamps();
 			
 			$table->unique('slug');
