@@ -14,6 +14,8 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     use WritableTrait, TimeableTrait, FileableTrait, UploadableTrait, SluggableTrait;
 
     protected $table = 'audios';
+    
+    public $mediatheque_type = 'audio';
 
     protected $guarded = array();
     protected $fillable = array(
@@ -27,22 +29,10 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         'duration'
     );
     
-    protected $appends = array(
-        'mediatheque_type'
-    );
-    
     protected $sluggable = array(
         'build_from' => 'mediatheque_type',
         'save_to'    => 'slug',
     );
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return 'audio';
-    }
     
     /**
      * Query scopes

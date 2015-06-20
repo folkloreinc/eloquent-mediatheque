@@ -14,6 +14,8 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
     use WritableTrait, SizeableTrait, FileableTrait, UploadableTrait, SluggableTrait;
 
     protected $table = 'pictures';
+    
+    public $mediatheque_type = 'picture';
 
     protected $guarded = array();
     protected $fillable = array(
@@ -28,22 +30,10 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
         'height'
     );
     
-    protected $appends = array(
-        'mediatheque_type'
-    );
-    
     protected $sluggable = array(
         'build_from' => 'mediatheque_type',
         'save_to'    => 'slug',
     );
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return 'picture';
-    }
     
     /**
      * Fileable

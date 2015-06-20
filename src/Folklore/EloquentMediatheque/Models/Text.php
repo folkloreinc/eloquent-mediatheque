@@ -10,14 +10,12 @@ class Text extends Model implements SluggableInterface {
     use SluggableTrait;
 
     protected $table = 'texts';
+    
+    public $mediatheque_type = 'text';
 
     protected $fillable = array(
         'content',
         'fields'
-    );
-    
-    protected $appends = array(
-        'mediatheque_type'
     );
     
     protected $sluggable = array(

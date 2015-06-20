@@ -4,6 +4,9 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Model extends Eloquent
 {
+
+    public $mediatheque_type = 'media';
+
     public function __construct(array $attributes = array())
     {
         $this->table = config('mediatheque.table_prefix').$this->table;

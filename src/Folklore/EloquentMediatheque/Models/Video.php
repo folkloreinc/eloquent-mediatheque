@@ -13,6 +13,8 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     use WritableTrait, SizeableTrait, TimeableTrait, SluggableTrait;
 
     protected $table = 'videos';
+    
+    public $mediatheque_type = 'text';
 
     protected $guarded = array();
     protected $fillable = array(
@@ -28,23 +30,10 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         'duration'
     );
     
-    protected $appends = array(
-        'mediatheque_type'
-    );
-    
     protected $sluggable = array(
         'build_from' => 'mediatheque_type',
-        'save_to' => 'slug',
-        'on_update' => true
+        'save_to' => 'slug'
     );
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return 'video';
-    }
     
     /**
      * Fileable
