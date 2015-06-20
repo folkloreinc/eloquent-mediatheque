@@ -3,6 +3,9 @@
 use Folklore\EloquentMediatheque\Traits\WritableTrait;
 use Folklore\EloquentMediatheque\Traits\SizeableTrait;
 use Folklore\EloquentMediatheque\Traits\TimeableTrait;
+use Folklore\EloquentMediatheque\Traits\FileableTrait;
+use Folklore\EloquentMediatheque\Traits\UploadableTrait;
+use Folklore\EloquentMediatheque\Traits\LinkableTrait;
 use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
@@ -10,7 +13,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface {
     
-    use WritableTrait, SizeableTrait, TimeableTrait, SluggableTrait;
+    use WritableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
 
     protected $table = 'videos';
     
@@ -33,6 +36,10 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     protected $sluggable = array(
         'build_from' => 'mediatheque_type',
         'save_to' => 'slug'
+    );
+    
+    protected $appends = array(
+        'link'
     );
     
     /**

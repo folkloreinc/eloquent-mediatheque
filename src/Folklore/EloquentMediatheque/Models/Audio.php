@@ -4,6 +4,7 @@ use Folklore\EloquentMediatheque\Traits\WritableTrait;
 use Folklore\EloquentMediatheque\Traits\TimeableTrait;
 use Folklore\EloquentMediatheque\Traits\FileableTrait;
 use Folklore\EloquentMediatheque\Traits\UploadableTrait;
+use Folklore\EloquentMediatheque\Traits\LinkableTrait;
 use Folklore\EloquentMediatheque\Interfaces\FileableInterface;
 use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
@@ -11,7 +12,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Audio extends Model implements SluggableInterface, FileableInterface, TimeableInterface {
     
-    use WritableTrait, TimeableTrait, FileableTrait, UploadableTrait, SluggableTrait;
+    use WritableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
 
     protected $table = 'audios';
     
@@ -32,6 +33,10 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     protected $sluggable = array(
         'build_from' => 'mediatheque_type',
         'save_to'    => 'slug',
+    );
+    
+    protected $appends = array(
+        'link'
     );
     
     /**

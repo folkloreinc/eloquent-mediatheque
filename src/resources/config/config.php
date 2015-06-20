@@ -16,6 +16,8 @@ return array(
 		
 		'path' => public_path().'/files',
 		
+		'link' => '/files',
+		
 		'delete_file_on_delete' => false,
 	    'delete_file_on_update' => false,
 		
@@ -36,6 +38,12 @@ return array(
 			'audio/mpeg' => 'mp3',
 			'audio/mp3' => 'mp3'
 		)
+		
+	),
+	
+	'linkable' => array(
+		
+		'fileable_path' => '/files',
 		
 	)
 
