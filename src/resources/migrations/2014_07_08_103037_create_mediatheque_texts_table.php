@@ -16,11 +16,13 @@ class CreateMediathequeTextsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('slug');
+			$table->string('name');
 			$table->text('content');
 			$table->text('fields');
 			$table->timestamps();
 			
 			$table->unique('slug');
+			$table->index('name');
 		});
 	}
 

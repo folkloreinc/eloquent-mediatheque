@@ -29,7 +29,7 @@ class CreateMediathequeVideosTable extends Migration {
 			$table->timestamps();
 			
 			$table->index('filename');
-			$table->index('original');
+			$table->index('name');
 			$table->unique('slug');
 		});
 	}
