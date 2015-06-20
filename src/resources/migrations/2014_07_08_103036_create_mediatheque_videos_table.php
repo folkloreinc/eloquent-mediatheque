@@ -16,8 +16,11 @@ class CreateMediathequeVideosTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('slug');
+			$table->string('name');
+			$table->string('source');
+			$table->string('url');
+			$table->string('embed');
 			$table->string('filename');
-			$table->string('original');
 			$table->string('mime',50);
 			$table->integer('size')->unsigned();
 			$table->smallInteger('width')->unsigned();

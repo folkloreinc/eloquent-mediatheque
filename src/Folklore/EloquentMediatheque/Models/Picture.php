@@ -17,8 +17,11 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
 
     protected $guarded = array();
     protected $fillable = array(
+        'name',
+        'source',
+        'url',
+        'embed',
         'filename',
-        'original',
         'mime',
         'size',
         'width',

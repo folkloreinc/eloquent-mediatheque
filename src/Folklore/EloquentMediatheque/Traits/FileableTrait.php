@@ -8,7 +8,7 @@ trait FileableTrait {
     
     protected $fileable_columns = array(
         'filename' => 'filename',
-        'original' => 'original',
+        'original' => 'name',
         'mime' => 'mime',
         'size' => 'size'
     );

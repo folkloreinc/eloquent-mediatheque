@@ -16,8 +16,11 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
 
     protected $guarded = array();
     protected $fillable = array(
+        'name',
+        'source',
+        'url',
+        'embed',
         'filename',
-        'original',
         'mime',
         'size',
         'width',

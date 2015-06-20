@@ -17,8 +17,11 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
 
     protected $guarded = array();
     protected $fillable = array(
+        'name',
+        'source',
+        'url',
+        'embed',
         'filename',
-        'original',
         'mime',
         'size',
         'duration'
