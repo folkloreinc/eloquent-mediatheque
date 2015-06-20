@@ -1,6 +1,7 @@
 <?php namespace Folklore\EloquentMediatheque\Models;
 
 use Folklore\EloquentMediatheque\Traits\WritableTrait;
+use Folklore\EloquentMediatheque\Traits\PicturableTrait;
 use Folklore\EloquentMediatheque\Traits\SizeableTrait;
 use Folklore\EloquentMediatheque\Traits\TimeableTrait;
 use Folklore\EloquentMediatheque\Traits\FileableTrait;
@@ -13,7 +14,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface {
     
-    use WritableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
+    use WritableTrait, PicturableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
 
     protected $table = 'videos';
     

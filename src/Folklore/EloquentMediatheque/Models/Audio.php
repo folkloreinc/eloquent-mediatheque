@@ -1,6 +1,7 @@
 <?php namespace Folklore\EloquentMediatheque\Models;
 
 use Folklore\EloquentMediatheque\Traits\WritableTrait;
+use Folklore\EloquentMediatheque\Traits\PicturableTrait;
 use Folklore\EloquentMediatheque\Traits\TimeableTrait;
 use Folklore\EloquentMediatheque\Traits\FileableTrait;
 use Folklore\EloquentMediatheque\Traits\UploadableTrait;
@@ -12,7 +13,7 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Audio extends Model implements SluggableInterface, FileableInterface, TimeableInterface {
     
-    use WritableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
+    use WritableTrait, PicturableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
 
     protected $table = 'audios';
     
