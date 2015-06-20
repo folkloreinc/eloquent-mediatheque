@@ -16,6 +16,7 @@ class CreateMediathequeTextsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('slug');
+			$table->text('content');
 			$table->text('fields');
 			$table->timestamps();
 			

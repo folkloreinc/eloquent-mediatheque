@@ -34,46 +34,9 @@ trait WritableTrait {
      * Sync methods
      *
      */
-    public function syncTexts($items = array()) {
-
-        $ids = array();
-        
-        if(is_array($items) && sizeof($items))
-        {
-            $order = 0;
-            foreach($items as $item)
-            {
-                $model = null;
-                if(!is_array($item))
-                {
-                    $model = Text::find($item);
-                    if(!$model)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    $model = isset($item['id']) && !empty($item['id']) ? Text::find($item['id']):null;
-                    if(!$model)
-                    {
-                        $model = new Text();
-                    }
-                    $model->fill($item);
-                    $model->save();
-                    
-                    $model->syncLocales(isset($item['locales']) ? $item['locales']:array());
-                }
-
-                $ids[$model->id] = array(
-                    'writable_order' => $this->writable_order ? $order:0
-                );
-                $order++;
-            }
-        }
-        
-        $this->texts()->sync($ids);
-
+    public function syncTexts($items = array())
+    {
+        $this->syncMorph('Folklore\EloquentMediatheque\Models\Text', 'writable', 'texts', $items);
     }
 
 }

@@ -5,21 +5,16 @@ use Folklore\EloquentMediatheque\Models\Collections\TextsCollection;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-use Dimsav\Translatable\Translatable;
-
 class Text extends Model implements SluggableInterface {
     
-    use Translatable, SluggableTrait;
+    use SluggableTrait;
 
     protected $table = 'texts';
 
     protected $fillable = array(
+        'content',
         'fields'
     );
-    
-    public $translatedAttributes = [
-        'content'
-    ];
     
     protected $appends = array(
         'mediatheque_type'

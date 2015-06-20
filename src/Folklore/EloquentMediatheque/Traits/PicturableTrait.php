@@ -34,9 +34,9 @@ trait PicturableTrait {
      * Sync methods
      *
      */
-     public function syncPictures($items = array())
-     {
-         $this->syncMorph('Folklore\EloquentMediatheque\Models\Picture', 'picturable', 'pictures', $items);
-     }
+    public function syncPictures($items = array())
+    {
+        $this->syncMorph('Folklore\EloquentMediatheque\Models\Picture', 'picturable', 'pictures', $items);
+    }
 
 }

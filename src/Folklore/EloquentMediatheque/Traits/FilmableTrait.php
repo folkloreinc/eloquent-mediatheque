@@ -34,9 +34,9 @@ trait FilmableTrait {
      * Sync methods
      *
      */
-     public function syncVideos($items = array())
-     {
-         $this->syncMorph('Folklore\EloquentMediatheque\Models\Video', 'filmable', 'videos', $items);
-     }
+    public function syncVideos($items = array())
+    {
+        $this->syncMorph('Folklore\EloquentMediatheque\Models\Video', 'filmable', 'videos', $items);
+    }
 
 }
