@@ -76,7 +76,7 @@ class MediathequeServiceProvider extends ServiceProvider {
 		});
 		
 		$this->app['events']->listen('eloquent.deleting*', function($model) use ($fileableObserver) {
-			if($fileable instanceof FileableInterface)
+			if($model instanceof FileableInterface)
 			{
 				$fileableObserver->deleting($model);
 			}
