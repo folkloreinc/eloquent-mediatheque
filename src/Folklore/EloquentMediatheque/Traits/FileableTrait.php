@@ -1,7 +1,7 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
-
+use Guzzle\Http\Client as GuzzleClient;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 
 trait FileableTrait {
@@ -70,13 +70,25 @@ trait FileableTrait {
         $extensions = config('mediatheque.fileable.mime_to_extension');
 		$destinationPath = config('mediatheque.fileable.path');
         
+        //Get original file name
+        $original =  basename($path);
+        
+        //If it's a remote file, download it
+        if(filter_var($path, FILTER_VALIDATE_URL))
+        {
+            $tmpPath =  tempnam('/tmp', 'MEDIATHEQUE');
+            $client = new GuzzleClient();
+            $response = $client->get($path, null, $tmpPath)->send();
+            $path = $tmpPath;
+        }
+        
         //Get file info
         $defaultFile = array();
         $defaultFile['tmp_path'] = $path;
-        $defaultFile['original'] = basename($path);
+        $defaultFile['original'] = $original;
+        $defaultFile['size'] = filesize($path);
         $defaultFile['mime'] = MimeTypeGuesser::getInstance()->guess($path);
         $defaultFile['type'] = explode('/',$defaultFile['mime'])[0];
-        $defaultFile['size'] = filesize($path);
         $defaultFile['extension'] = isset($extensions[$defaultFile['mime']]) ? $extensions[$defaultFile['mime']]:'';
         $file = array_merge($defaultFile, $file);
         
@@ -89,7 +101,8 @@ trait FileableTrait {
         }
         
         //Save to get id
-        if(!$this->id) {
+        if(!$this->id)
+        {
             $this->save();
         }
 
@@ -100,13 +113,19 @@ trait FileableTrait {
         $file['basename'] = basename($destinationPath.'/'.$file['filename']);
 
 		//Create directory if doesn't exist
-		if(!file_exists($file['folder'])) {
+		if(!file_exists($file['folder']))
+        {
 			mkdir($file['folder'], 0755, true);
 		}
 
 		//Move file
         copy($path, $file['folder'].'/'.$file['basename']);
-        unlink($path);
+        
+        //Delete temp file
+        if(file_exists($path))
+        {
+            unlink($path);
+        }
 
         //Model data
         $modelData = array();
@@ -130,7 +149,10 @@ trait FileableTrait {
         }
         
         //Fill model
-        $this->fill($modelData);
+        foreach($modelData as $key => $value)
+        {
+            $this->{$key} = $value;
+        }
         $this->save();
 
 		return $this;
