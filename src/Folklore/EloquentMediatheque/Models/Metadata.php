@@ -37,9 +37,9 @@ class Metadata extends Model implements SluggableInterface {
     protected function castAttribute($key, $value)
     {
         $type = $this->getCastType($key);
-        if($type)
+        if($type === 'type_attribute' && !empty($this->type))
         {
-            $type = $this->type;
+            $this->casts[$key] = $this->type;
         }
         
         return parent::castAttribute($key, $value);
