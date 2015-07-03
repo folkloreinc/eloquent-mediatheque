@@ -12,7 +12,7 @@ class CreateMediathequeMetadatableTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create(config('mediatheque.table_prefix').'metadatable', function(Blueprint $table)
+		Schema::create(config('mediatheque.table_prefix').'metadatables', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('metadata_id')->unsigned();
@@ -36,7 +36,7 @@ class CreateMediathequeMetadatableTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop(config('mediatheque.table_prefix').'metadatable');
+		Schema::drop(config('mediatheque.table_prefix').'metadatables');
 	}
 
 }
