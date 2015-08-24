@@ -18,12 +18,20 @@ class CreateMediathequeMetadatasTable extends Migration {
 			$table->string('slug');
 			$table->string('type');
 			$table->string('name');
-			$table->longText('value');
+			$table->string('value');
+			$table->longText('value_text');
+			$table->date('value_date');
+			$table->time('value_time');
+			$table->datetime('value_datetime');
 			$table->timestamps();
 			
 			$table->index('type');
 			$table->index('name');
 			$table->unique('slug');
+			$table->index('value');
+			$table->index('value_date');
+			$table->index('value_time');
+			$table->index('value_datetime');
 		});
 	}
 
