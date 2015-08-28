@@ -96,6 +96,21 @@ class Metadata extends Model implements SluggableInterface {
         
         return parent::castAttribute($key, $value);
     }
+    
+    /**
+     * Query scopes
+     */
+    public function scopeSearch($query, $text)
+    {
+        $query->where(function($query) use ($text) {
+			$query->where('slug', 'LIKE', '%'.$text.'%');
+            $query->orWhere('name', 'LIKE', '%'.$text.'%');
+            $query->orWhere('value', 'LIKE', '%'.$text.'%');
+            $query->orWhere('value_text', 'LIKE', '%'.$text.'%');
+		});
+        
+        return $query;
+    }
 
 
 }

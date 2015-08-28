@@ -77,9 +77,10 @@ class Text extends Model implements SluggableInterface {
     public function scopeSearch($query, $text)
     {
         $query->where(function($query) use ($text) {
-			$query->where(function($query) use ($text) {
-				$query->where('slug', 'LIKE', '%'.$text.'%');
-			});
+			$query->where('slug', 'LIKE', '%'.$text.'%');
+            $query->orWhere('name', 'LIKE', '%'.$text.'%');
+            $query->orWhere('content', 'LIKE', '%'.$text.'%');
+            $query->orWhere('fields', 'LIKE', '%'.$text.'%');
 		});
         
         return $query;
