@@ -6,18 +6,23 @@ use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 
 trait FileableTrait {
     
-    protected $fileable_columns = array(
+    protected $fileable_columns = [
         'filename' => 'filename',
         'original' => 'name',
         'mime' => 'mime',
         'size' => 'size'
-    );
-    
+    ];
+
     protected $fileable_destination = '{type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}';
     
     public function getFileableColumns()
     {
         return $this->fileable_columns;
+    }
+    
+    public function getFileableDestination()
+    {
+        return $this->fileable_destination;
     }
     
     public function setFileableColumns($columns)
@@ -27,17 +32,20 @@ trait FileableTrait {
     
     public function getFilenameColumnName()
     {
-        return $this->fileable_columns['filename'];
+        $columns = $this->getFileableColumns();
+        return $columns['filename'];
     }
     
     public function getSizeColumnName()
     {
-        return $this->fileable_columns['size'];
+        $columns = $this->getFileableColumns();
+        return $columns['size'];
     }
     
     public function getMimeColumnName()
     {
-        return $this->fileable_columns['mime'];
+        $columns = $this->getFileableColumns();
+        return $columns['mime'];
     }
     
     public function getSize()
@@ -108,7 +116,8 @@ trait FileableTrait {
 
 		//Get destination
         $replaces = array_merge($this->toArray(),$file);
-        $file['filename'] = $this->parseFileableDestination($this->fileable_destination, $replaces);
+        $destination = $this->getFileableDestination();
+        $file['filename'] = $this->parseFileableDestination($destination, $replaces);
         $file['folder'] = dirname($destinationPath.'/'.$file['filename']);
         $file['basename'] = basename($destinationPath.'/'.$file['filename']);
 
@@ -129,7 +138,8 @@ trait FileableTrait {
 
         //Model data
         $modelData = array();
-        foreach($this->fileable_columns as $key => $column)
+        $columns = $this->getFileableColumns();
+        foreach($columns as $key => $column)
         {
             if($column)
             {
