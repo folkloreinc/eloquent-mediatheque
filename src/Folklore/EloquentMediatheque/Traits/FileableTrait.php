@@ -129,12 +129,6 @@ trait FileableTrait {
 
 		//Move file
         copy($path, $file['folder'].'/'.$file['basename']);
-        
-        //Delete temp file
-        if(file_exists($path))
-        {
-            unlink($path);
-        }
 
         //Model data
         $modelData = array();
