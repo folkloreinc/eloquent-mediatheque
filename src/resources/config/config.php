@@ -29,6 +29,9 @@ return array(
 			'image/x-png' => 'png',
 			'image/gif' => 'gif',
 			'image/x-gif' => 'gif',
+			'image/svg+xml' => 'svg',
+			'image/xml' => 'svg',
+			'image/svg' => 'svg',
 	        
 	        //Audio
 			'audio/wave' => 'wav',
