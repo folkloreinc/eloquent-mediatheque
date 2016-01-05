@@ -1,7 +1,7 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
-use Guzzle\Http\Client as GuzzleClient;
+use GuzzleHttp\Client as GuzzleClient;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 
 trait FileableTrait {
@@ -86,7 +86,9 @@ trait FileableTrait {
         {
             $tmpPath =  tempnam('/tmp', 'MEDIATHEQUE');
             $client = new GuzzleClient();
-            $response = $client->get($path, null, $tmpPath)->send();
+            $response = $client->request('GET', $path, [
+                'sink' => $tmpPath
+            ]);
             $path = $tmpPath;
         }
         
