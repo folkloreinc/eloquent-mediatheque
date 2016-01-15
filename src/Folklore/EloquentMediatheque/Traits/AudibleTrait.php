@@ -1,7 +1,5 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
-use Folklore\EloquentMediatheque\Models\Audio;
-
 trait AudibleTrait {
 
     protected $audible_order = true;
@@ -15,7 +13,7 @@ trait AudibleTrait {
     {
         $morphName = 'audible';
         $key = 'audio_id';
-        $model = 'Folklore\EloquentMediatheque\Models\Audio';
+        $model = config('mediatheque.models.Audio', 'Folklore\EloquentMediatheque\Models\Audio');
         $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
@@ -36,6 +34,7 @@ trait AudibleTrait {
      */
     public function syncAudios($items = array())
     {
-        $this->syncMorph('Folklore\EloquentMediatheque\Models\Audio', 'audible', 'audios', $items);
+        $model = config('mediatheque.models.Audio', 'Folklore\EloquentMediatheque\Models\Audio');
+        $this->syncMorph($model, 'audible', 'audios', $items);
     }
 }

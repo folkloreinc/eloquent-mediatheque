@@ -33,7 +33,7 @@ class Text extends Model implements SluggableInterface {
     public function pictures()
     {
         $morphName = 'writable';
-        $model = 'Folklore\EloquentMediatheque\Models\Picture';
+        $model = config('mediatheque.models.Picture', 'Folklore\EloquentMediatheque\Models\Picture');
         $table = config('mediatheque.table_prefix').'writables';
         $query = $this->morphedByMany($model, $morphName, $table)
                         ->withTimestamps()
@@ -44,7 +44,7 @@ class Text extends Model implements SluggableInterface {
     public function audios()
     {
         $morphName = 'writable';
-        $model = 'Folklore\EloquentMediatheque\Models\Audio';
+        $model = config('mediatheque.models.Audio', 'Folklore\EloquentMediatheque\Models\Audio');
         $table = config('mediatheque.table_prefix').'writables';
         $query = $this->morphedByMany($model, $morphName, $table)
                         ->withTimestamps()
@@ -55,7 +55,7 @@ class Text extends Model implements SluggableInterface {
     public function videos()
     {
         $morphName = 'writable';
-        $model = 'Folklore\EloquentMediatheque\Models\Video';
+        $model = config('mediatheque.models.Video', 'Folklore\EloquentMediatheque\Models\Video');
         $table = config('mediatheque.table_prefix').'writables';
         $query = $this->morphedByMany($model, $morphName, $table)
                         ->withTimestamps()

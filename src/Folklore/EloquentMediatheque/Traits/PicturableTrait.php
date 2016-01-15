@@ -1,7 +1,5 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
-use Folklore\EloquentMediatheque\Models\Picture;
-
 trait PicturableTrait {
 
     protected $picturable_order = true;
@@ -15,7 +13,7 @@ trait PicturableTrait {
     {
         $morphName = 'picturable';
         $key = 'picture_id';
-        $model = 'Folklore\EloquentMediatheque\Models\Picture';
+        $model = config('mediatheque.models.Picture', 'Folklore\EloquentMediatheque\Models\Picture');
         $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
@@ -36,7 +34,8 @@ trait PicturableTrait {
      */
     public function syncPictures($items = array())
     {
-        $this->syncMorph('Folklore\EloquentMediatheque\Models\Picture', 'picturable', 'pictures', $items);
+        $model = config('mediatheque.models.Picture', 'Folklore\EloquentMediatheque\Models\Picture');
+        $this->syncMorph($model, 'picturable', 'pictures', $items);
     }
 
 }

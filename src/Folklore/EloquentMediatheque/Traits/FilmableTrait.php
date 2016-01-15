@@ -1,7 +1,5 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
-use Folklore\EloquentMediatheque\Models\Video;
-
 trait FilmableTrait {
 
     protected $filmable_order = true;
@@ -15,7 +13,7 @@ trait FilmableTrait {
     {
         $morphName = 'filmable';
         $key = 'video_id';
-        $model = 'Folklore\EloquentMediatheque\Models\Video';
+        $model = config('mediatheque.models.Video', 'Folklore\EloquentMediatheque\Models\Video');
         $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
@@ -36,7 +34,8 @@ trait FilmableTrait {
      */
     public function syncVideos($items = array())
     {
-        $this->syncMorph('Folklore\EloquentMediatheque\Models\Video', 'filmable', 'videos', $items);
+        $model = config('mediatheque.models.Video', 'Folklore\EloquentMediatheque\Models\Video');
+        $this->syncMorph($model, 'filmable', 'videos', $items);
     }
 
 }

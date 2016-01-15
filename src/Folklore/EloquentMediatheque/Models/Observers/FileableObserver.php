@@ -1,7 +1,5 @@
 <?php namespace Folklore\EloquentMediatheque\Models\Observers;
 
-use Folklore\EloquentMediatheque\Models\Picture;
-
 class FileableObserver {
     
     protected $app;

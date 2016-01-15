@@ -1,7 +1,5 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
-use Folklore\EloquentMediatheque\Models\Text;
-
 trait WritableTrait {
 
     protected $writable_order = true;
@@ -15,7 +13,7 @@ trait WritableTrait {
     {
         $morphName = 'writable';
         $key = 'text_id';
-        $model = 'Folklore\EloquentMediatheque\Models\Text';
+        $model = config('mediatheque.models.Text', 'Folklore\EloquentMediatheque\Models\Text');
         $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
@@ -36,7 +34,8 @@ trait WritableTrait {
      */
     public function syncTexts($items = array())
     {
-        $this->syncMorph('Folklore\EloquentMediatheque\Models\Text', 'writable', 'texts', $items);
+        $model = config('mediatheque.models.Text', 'Folklore\EloquentMediatheque\Models\Text');
+        $this->syncMorph($model, 'writable', 'texts', $items);
     }
 
 }

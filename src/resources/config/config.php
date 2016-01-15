@@ -5,6 +5,16 @@
 return array(
 	
 	'table_prefix' => 'mediatheque_',
+	
+	'models' => array(
+		
+		'Picture' => \Folklore\EloquentMediatheque\Models\Picture::class,
+		'Audio' => \Folklore\EloquentMediatheque\Models\Audio::class,
+		'Video' => \Folklore\EloquentMediatheque\Models\Video::class,
+		'Text' => \Folklore\EloquentMediatheque\Models\Text::class,
+		'Metadata' => \Folklore\EloquentMediatheque\Models\Metadata::class
+		
+	),
     
 	'uploadable' => array(
 		

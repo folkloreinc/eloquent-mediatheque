@@ -1,7 +1,5 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
-use Folklore\EloquentMediatheque\Models\Metadata;
-
 trait MetadatableTrait {
 
     /*
@@ -13,7 +11,7 @@ trait MetadatableTrait {
     {
         $morphName = 'metadatable';
         $key = 'metadata_id';
-        $model = 'Folklore\EloquentMediatheque\Models\Metadata';
+        $model = config('mediatheque.models.Metadata', 'Folklore\EloquentMediatheque\Models\Metadata');
         $table = config('mediatheque.table_prefix').$morphName.'s';
         $query = $this->morphToMany($model, $morphName, $table, null, $key)
                         ->withTimestamps()
@@ -29,7 +27,8 @@ trait MetadatableTrait {
      */
     public function syncMetadatas($items = array())
     {
-        $this->syncMorph('Folklore\EloquentMediatheque\Models\Metadata', 'metadatable', 'metadatas', $items);
+        $model = config('mediatheque.models.Metadata', 'Folklore\EloquentMediatheque\Models\Metadata');
+        $this->syncMorph($model, 'metadatable', 'metadatas', $items);
     }
 
 }
