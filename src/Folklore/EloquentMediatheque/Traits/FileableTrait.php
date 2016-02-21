@@ -169,7 +169,7 @@ trait FileableTrait {
         $filesystem = config('mediatheque.fileable.filesystem');
         if($filesystem)
         {
-            $disk = app('storage')->disk($filesystem);
+            $disk = app('filesystem')->disk($filesystem);
             $disk->delete($model->filename);
         }
         elseif(method_exists($this, 'deleteFileableFile'))
@@ -206,7 +206,7 @@ trait FileableTrait {
         $filesystem = config('mediatheque.fileable.filesystem');
         if($filesystem)
         {
-            $disk = app('storage')->disk($filesystem);
+            $disk = app('filesystem')->disk($filesystem);
             $resource = fopen($path, 'r');
             $disk->put($file['filename'], $resource);
             fclose($resource);
