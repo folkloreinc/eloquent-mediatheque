@@ -203,6 +203,7 @@ trait FileableTrait {
     
     protected function saveFile($path, $file)
     {
+        $filesystem = config('mediatheque.fileable.filesystem');
         if($filesystem)
         {
             $disk = app('storage')->disk($filesystem);
