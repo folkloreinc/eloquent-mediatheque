@@ -18,16 +18,19 @@ return array(
     
 	'uploadable' => array(
 		
-		'tmp_path' => public_path().'/files/tmp',
+		'tmp_path' => sys_get_temp_dir()
 		
 	),
 	
 	'fileable' => array(
 		
+		'filesystem' => null,
+	
 		'path' => public_path().'/files',
 		
-		'link' => '/files',
+		'tmp_path' => sys_get_temp_dir(),
 		
+		'delete_original_file' => false,
 		'delete_file_on_delete' => false,
 	    'delete_file_on_update' => false,
 		

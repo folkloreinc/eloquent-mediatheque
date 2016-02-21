@@ -11,22 +11,17 @@ trait UploadableTrait {
 		$file['mime'] = $uploadedFile->getMimeType();
         
         //Get temp folder and name
-        $tempFolder = config('mediatheque.uploadable.tmp_path');
-        $tempFilename = uniqid();
-        
-        //Create directory if doesn't exist
-		if(!file_exists($tempFolder)) {
-			mkdir($tempFolder, 0755, true);
-		}
+        $tmpPath = tempnam(config('mediatheque.uploadable.tmp_path'), 'MEDIATHEQUE');
+        $tmpFilename = basename($tmpPath);
+        $tmpFolder = dirname($tmpFilename);
         
         ///Move uploaded file
-        $uploadedFile->move($tempFolder, $tempFilename);
+        $uploadedFile->move($tmpFolder, $tmpFilename);
         
         //Set file
-        $this->setFile($tempFolder.'/'.$tempFilename, $file);
+        $this->setFile($tmpPath, $file);
         
         //Delete temp file
-        $tmpPath = $tempFolder.'/'.$tempFilename;
         if(file_exists($tmpPath))
         {
             unlink($tmpPath);

@@ -75,21 +75,19 @@ trait FileableTrait {
     public function setFile($path, $file = array())
     {
         //Get config
+        $filesystem = config('mediatheque.fileable.filesystem');
         $extensions = config('mediatheque.fileable.mime_to_extension');
 		$destinationPath = config('mediatheque.fileable.path');
+        $extension = pathinfo(array_get($file, 'original', $path), PATHINFO_EXTENSION);
         
         //Get original file name
+        $deleteOriginalFile = config('mediatheque.fileable.delete_original_file', false);
         $original =  basename($path);
         
         //If it's a remote file, download it
         if(filter_var($path, FILTER_VALIDATE_URL))
         {
-            $tmpPath =  tempnam('/tmp', 'MEDIATHEQUE');
-            $client = new GuzzleClient();
-            $response = $client->request('GET', $path, [
-                'sink' => $tmpPath
-            ]);
-            $path = $tmpPath;
+            $path = $this->downloadFile($path);
         }
         
         //Get file info
@@ -99,7 +97,7 @@ trait FileableTrait {
         $defaultFile['size'] = filesize($path);
         $defaultFile['mime'] = MimeTypeGuesser::getInstance()->guess($path);
         $defaultFile['type'] = explode('/',$defaultFile['mime'])[0];
-        $defaultFile['extension'] = isset($extensions[$defaultFile['mime']]) ? $extensions[$defaultFile['mime']]:'';
+        $defaultFile['extension'] = isset($extensions[$defaultFile['mime']]) ? $extensions[$defaultFile['mime']]:$extension;
         $file = array_merge($defaultFile, $file);
         
         //Get size
@@ -122,15 +120,9 @@ trait FileableTrait {
         $file['filename'] = $this->parseFileableDestination($destination, $replaces);
         $file['folder'] = dirname($destinationPath.'/'.$file['filename']);
         $file['basename'] = basename($destinationPath.'/'.$file['filename']);
-
-		//Create directory if doesn't exist
-		if(!file_exists($file['folder']))
-        {
-			mkdir($file['folder'], 0755, true);
-		}
-
-		//Move file
-        copy($path, $file['folder'].'/'.$file['basename']);
+        
+        //Save file
+        $this->saveFile($path, $file);
 
         //Model data
         $modelData = array();
@@ -142,6 +134,8 @@ trait FileableTrait {
                 $modelData[$column] = $file[$key];
             }
         }
+        
+        //Get size
         if($this instanceof SizeableInterface)
         {
             if(isset($file['width']))
@@ -160,17 +154,76 @@ trait FileableTrait {
             $this->{$key} = $value;
         }
         $this->save();
+        
+        //Delete original file
+        if($deleteOriginalFile && file_exists($path))
+        {
+            unlink($path);
+        }
 
 		return $this;
     }
     
     public function deleteFile()
     {
-        $path = config('mediatheque.fileable.path');
-        $path = $path.'/'.$model->filename;
-        if(file_exists($path))
+        $filesystem = config('mediatheque.fileable.filesystem');
+        if($filesystem)
         {
-            unlink($path);
+            $disk = app('storage')->disk($filesystem);
+            $disk->delete($model->filename);
+        }
+        elseif(method_exists($this, 'deleteFileableFile'))
+        {
+            $this->deleteFileableFile();
+        }
+        else
+        {
+            $path = config('mediatheque.fileable.path');
+            $path = $path.'/'.$model->filename;
+            if(file_exists($path))
+            {
+                unlink($path);
+            }
+        }
+        
+    }
+    
+    protected function downloadFile($path)
+    {
+        $deleteOriginalFile = true;
+        $tmpPath = tempnam(config('mediatheque.fileable.tmp_path'), 'MEDIATHEQUE');
+        $client = new GuzzleClient();
+        $response = $client->request('GET', $path, [
+            'sink' => $tmpPath
+        ]);
+        $path = $tmpPath;
+        
+        return $tmpPath;
+    }
+    
+    protected function saveFile($path, $file)
+    {
+        if($filesystem)
+        {
+            $disk = app('storage')->disk($filesystem);
+            $resource = fopen($path, 'r');
+            $disk->put($file['filename'], $resource);
+            fclose($resource);
+        }
+        elseif(method_exists($this, 'saveFileableFile'))
+        {
+            $this->saveFileableFile($file);
+        }
+        else
+        {
+            //Create directory if doesn't exist
+    		if(!file_exists($file['folder']))
+            {
+    			mkdir($file['folder'], 0755, true);
+    		}
+
+    		//Move file
+            copy($path, $file['folder'].'/'.$file['basename']);
         }
     }
     
