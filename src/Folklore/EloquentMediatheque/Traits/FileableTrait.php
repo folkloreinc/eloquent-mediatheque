@@ -166,10 +166,9 @@ trait FileableTrait {
     
     public function deleteFile()
     {
-        $filesystem = config('mediatheque.fileable.filesystem');
-        if($filesystem)
+        $disk = $this->getFileableDisk();
+        if($disk)
         {
-            $disk = app('filesystem')->disk($filesystem);
             $disk->delete($model->filename);
         }
         elseif(method_exists($this, 'deleteFileableFile'))
@@ -201,14 +200,29 @@ trait FileableTrait {
         return $tmpPath;
     }
     
-    protected function saveFile($path, $file)
+    protected function getFileableDisk()
     {
         $filesystem = config('mediatheque.fileable.filesystem');
-        if($filesystem)
+        if(!$filesystem)
         {
-            $disk = app('filesystem')->disk($filesystem);
+            return null;
+        }
+        
+        return $filesystem === 'cloud' ? app('filesystem')->cloud():app('filesystem')->disk($filesystem);
+    }
+    
+    protected function saveFile($path, $file)
+    {
+        $disk = $this->getFileableDisk();
+        if($disk)
+        {
             $resource = fopen($path, 'r');
-            $disk->put($file['filename'], $resource);
+            $disk->getDriver()
+                ->put($file['filename'], $resource, [
+                    'visibility' => 'public',
+                    'ContentType' => array_get($file, 'mime', 'image/jpeg'),
+                    'CacheControl' => 'max-age='.(3600 * 24)
+                ]);
             fclose($resource);
         }
         elseif(method_exists($this, 'saveFileableFile'))
