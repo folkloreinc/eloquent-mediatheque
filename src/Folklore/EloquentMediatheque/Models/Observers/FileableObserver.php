@@ -12,7 +12,7 @@ class FileableObserver {
     public function updating($model)
     {
         $fileableColumns = array_values($model->getFileableColumns());
-        if(!$this->app['config']->get('eloquent-mediatheque::fileable.delete_file_on_update'))
+        if(!$this->app['config']->get('mediatheque.fileable.delete_file_on_update'))
         {
             return;
         }
@@ -21,17 +21,19 @@ class FileableObserver {
             return;
         }
         
-        $model->deleteFile();
+        $original = $model->getOriginal();
+        $model->deleteFileableFile($original['filename']);
     }
     
     public function deleting($model)
     {
-        if(!$this->app['config']->get('eloquent-mediatheque::fileable.delete_file_on_delete'))
+        if(!$this->app['config']->get('mediatheque.fileable.delete_file_on_delete'))
         {
             return;
         }
         
-        $model->deleteFile();
+        $original = $model->getOriginal();
+        $model->deleteFileableFile($original['filename']);
     }
     
 }

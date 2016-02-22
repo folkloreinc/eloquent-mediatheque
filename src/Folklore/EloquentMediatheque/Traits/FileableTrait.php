@@ -155,6 +155,7 @@ trait FileableTrait {
         }
         $this->save();
         
+        
         //Delete original file
         if($deleteOriginalFile && file_exists($path))
         {
@@ -164,12 +165,15 @@ trait FileableTrait {
 		return $this;
     }
     
-    public function deleteFile()
+    public function deleteFileableFile($filename = null)
     {
+        if(!$filename) {
+            $filename = $this->filename;
+        }
         $disk = $this->getFileableDisk();
-        if($disk)
+        if($disk && $disk->exists($filename))
         {
-            $disk->delete($model->filename);
+            $disk->delete($filename);
         }
         elseif(method_exists($this, 'deleteFileableFile'))
         {
@@ -178,7 +182,7 @@ trait FileableTrait {
         else
         {
             $path = config('mediatheque.fileable.path');
-            $path = $path.'/'.$model->filename;
+            $path = $path.'/'.$filename;
             if(file_exists($path))
             {
                 unlink($path);
