@@ -22,7 +22,10 @@ class FileableObserver {
         }
         
         $original = $model->getOriginal();
-        $model->deleteFileableFile($original['filename']);
+        if(isset($original['filename']))
+        {
+            $model->deleteFileableFile($original['filename']);
+        }
     }
     
     public function deleting($model)
@@ -32,8 +35,7 @@ class FileableObserver {
             return;
         }
         
-        $original = $model->getOriginal();
-        $model->deleteFileableFile($original['filename']);
+        $model->deleteFileableFile($model->filename);
     }
     
 }
