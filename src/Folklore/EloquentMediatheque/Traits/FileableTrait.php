@@ -12,8 +12,6 @@ trait FileableTrait {
         'mime' => 'mime',
         'size' => 'size'
     ];
-
-    protected $fileable_destination = '{type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}';
     
     public function getFileableColumns()
     {
@@ -22,7 +20,7 @@ trait FileableTrait {
     
     public function getFileableDestination()
     {
-        return $this->fileable_destination;
+        return config('mediatheque.fileable.destination');
     }
     
     public function setFileableColumns($columns)

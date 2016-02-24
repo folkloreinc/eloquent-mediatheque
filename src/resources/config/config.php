@@ -24,6 +24,8 @@ return array(
 	
 	'fileable' => array(
 		
+		'destination' => '{type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}',
+		
 		'filesystem' => null,
 	
 		'path' => public_path().'/files',
