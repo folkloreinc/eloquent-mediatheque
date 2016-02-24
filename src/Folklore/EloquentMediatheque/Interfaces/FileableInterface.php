@@ -22,5 +22,5 @@ interface FileableInterface {
     
     public function setFile($path, $file = array());
     
-    public function deleteFile();
+    public function deleteFileableFile();
 }
