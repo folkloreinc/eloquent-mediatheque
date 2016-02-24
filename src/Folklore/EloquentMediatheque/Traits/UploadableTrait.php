@@ -11,9 +11,9 @@ trait UploadableTrait {
 		$file['mime'] = $uploadedFile->getMimeType();
         
         //Get temp folder and name
-        $tmpPath = tempnam(config('mediatheque.uploadable.tmp_path'), 'MEDIATHEQUE');
+        $tmpPath = tempnam(config('mediatheque.uploadable.tmp_path', sys_get_temp_dir()), 'MEDIATHEQUE');
         $tmpFilename = basename($tmpPath);
-        $tmpFolder = dirname($tmpFilename);
+        $tmpFolder = dirname($tmpPath);
         
         ///Move uploaded file
         $uploadedFile->move($tmpFolder, $tmpFilename);
