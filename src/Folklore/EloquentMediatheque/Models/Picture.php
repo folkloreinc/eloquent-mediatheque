@@ -46,12 +46,16 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
     /**
      * Fileable
      */
-    public function deleteFileableFile()
+    public function deleteFileableFile($filename = null)
     {
-        $this->originalDeleteFileableFile();
+        if(!$filename)
+        {
+            $filename = $this->filename;
+        }
+        $this->originalDeleteFileableFile($filename);
         
         $path = config('mediatheque.fileable.path');
-        $path = $path.'/'.$this->filename;
+        $path = $path.'/'.$filename;
         app('image')->delete($path);
     }
     
