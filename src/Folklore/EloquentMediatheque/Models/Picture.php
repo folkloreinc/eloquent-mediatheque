@@ -51,7 +51,7 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
         $this->originalDeleteFileableFile();
         
         $path = config('mediatheque.fileable.path');
-        $path = $path.'/'.$model->filename;
+        $path = $path.'/'.$this->filename;
         app('image')->delete($path);
     }
     
