@@ -12,7 +12,10 @@ use Cviebrock\EloquentSluggable\SluggableTrait;
 
 class Picture extends Model implements SluggableInterface, FileableInterface, SizeableInterface {
     
-    use WritableTrait, SizeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
+    use WritableTrait, SizeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait
+    {
+        FileableTrait::deleteFileableFile as originalDeleteFileableFile;
+    }
 
     protected $table = 'pictures';
     
@@ -45,7 +48,7 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
      */
     public function deleteFileableFile()
     {
-        parent::deleteFileableFile();
+        $this->originalDeleteFileableFile();
         
         $path = config('mediatheque.fileable.path');
         $path = $path.'/'.$model->filename;

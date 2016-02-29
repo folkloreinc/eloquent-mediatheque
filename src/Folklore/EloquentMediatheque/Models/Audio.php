@@ -40,15 +40,6 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         'link'
     );
     
-    public function deleteFileableFile()
-    {
-        parent::deleteFileableFile();
-
-        $path = config('mediatheque.fileable.path');
-        $path = $path.'/'.$model->filename;
-        app('image')->delete($path);
-    }
-    
     /**
      * Query scopes
      */
