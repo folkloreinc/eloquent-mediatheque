@@ -20,7 +20,7 @@ trait FileableTrait {
     
     public function getFileableDestination()
     {
-        return config('mediatheque.fileable.destination');
+        return config('mediatheque.fileable.destination', '{type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}');
     }
     
     public function setFileableColumns($columns)
@@ -192,7 +192,7 @@ trait FileableTrait {
     protected function downloadFile($path)
     {
         $deleteOriginalFile = true;
-        $tmpPath = tempnam(config('mediatheque.fileable.tmp_path'), 'MEDIATHEQUE');
+        $tmpPath = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'MEDIATHEQUE');
         $client = new GuzzleClient();
         $response = $client->request('GET', $path, [
             'sink' => $tmpPath
