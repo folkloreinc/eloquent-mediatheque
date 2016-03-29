@@ -40,7 +40,8 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     );
     
     protected $appends = array(
-        'link'
+        'link',
+        'mediatheque_type'
     );
     
     /**
@@ -65,5 +66,13 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
 			$query->orWhere('original', 'LIKE', '%'.$text.'%');
 		});
         return $query;
+    }
+    
+    /**
+     * Accessors and mutators
+     */
+    protected function getMediathequeTypeAttribute()
+    {
+        return $this->mediatheque_type;
     }
 }

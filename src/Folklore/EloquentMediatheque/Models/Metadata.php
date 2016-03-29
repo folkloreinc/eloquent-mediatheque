@@ -32,6 +32,10 @@ class Metadata extends Model implements SluggableInterface {
         'value_float'
     );
     
+    protected $appends = array(
+        'mediatheque_type'
+    );
+    
     protected $sluggable = array(
         'build_from' => 'mediatheque_type',
         'save_to'    => 'slug',
@@ -73,6 +77,11 @@ class Metadata extends Model implements SluggableInterface {
         {
             return $this->attributes['value'];
         }
+    }
+    
+    protected function getMediathequeTypeAttribute()
+    {
+        return $this->mediatheque_type;
     }
     
     /**

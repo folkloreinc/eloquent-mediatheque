@@ -37,7 +37,8 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     );
     
     protected $appends = array(
-        'link'
+        'link',
+        'mediatheque_type'
     );
     
     /**
@@ -51,5 +52,15 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
 			$query->orWhere('original', 'LIKE', '%'.$text.'%');
 		});
         return $query;
+    }
+    
+    
+    
+    /**
+     * Accessors and mutators
+     */
+    protected function getMediathequeTypeAttribute()
+    {
+        return $this->mediatheque_type;
     }
 }

@@ -27,6 +27,10 @@ class Text extends Model implements SluggableInterface {
         'fields' => 'object'
     ];
     
+    protected $appends = array(
+        'mediatheque_type'
+    );
+    
     /**
      * Relationships
      */
@@ -84,5 +88,13 @@ class Text extends Model implements SluggableInterface {
 		});
         
         return $query;
+    }
+    
+    /**
+     * Accessors and mutators
+     */
+    protected function getMediathequeTypeAttribute()
+    {
+        return $this->mediatheque_type;
     }
 }

@@ -40,7 +40,8 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
     );
     
     protected $appends = array(
-        'link'
+        'link',
+        'mediatheque_type'
     );
     
     /**
@@ -79,6 +80,14 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
 			$query->orWhere('original', 'LIKE', '%'.$text.'%');
 		});
         return $query;
+    }
+    
+    /**
+     * Accessors and mutators
+     */
+    protected function getMediathequeTypeAttribute()
+    {
+        return $this->mediatheque_type;
     }
 
 
