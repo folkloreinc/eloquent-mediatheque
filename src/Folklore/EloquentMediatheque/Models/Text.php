@@ -2,12 +2,7 @@
 
 use Folklore\EloquentMediatheque\Models\Collections\TextsCollection;
 
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
-
-class Text extends Model implements SluggableInterface {
-    
-    use SluggableTrait;
+class Text extends Model {
 
     protected $table = 'texts';
     
@@ -16,11 +11,6 @@ class Text extends Model implements SluggableInterface {
     protected $fillable = array(
         'content',
         'fields'
-    );
-    
-    protected $sluggable = array(
-        'build_from' => 'mediatheque_type',
-        'save_to'    => 'slug',
     );
     
     protected $casts = [

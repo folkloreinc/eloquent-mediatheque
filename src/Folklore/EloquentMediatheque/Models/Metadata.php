@@ -7,12 +7,8 @@ use Folklore\EloquentMediatheque\Traits\UploadableTrait;
 use Folklore\EloquentMediatheque\Traits\LinkableTrait;
 use Folklore\EloquentMediatheque\Interfaces\FileableInterface;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
 
-class Metadata extends Model implements SluggableInterface {
-    
-    use SluggableTrait;
+class Metadata extends Model {
 
     protected $table = 'metadatas';
     
@@ -34,11 +30,6 @@ class Metadata extends Model implements SluggableInterface {
     
     protected $appends = array(
         'mediatheque_type'
-    );
-    
-    protected $sluggable = array(
-        'build_from' => 'mediatheque_type',
-        'save_to'    => 'slug',
     );
     
     protected $casts = [
