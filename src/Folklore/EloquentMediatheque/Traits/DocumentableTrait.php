@@ -32,7 +32,7 @@ trait DocumentableTrait {
      * Sync methods
      *
      */
-    public function syncPictures($items = array())
+    public function syncDocuments($items = array())
     {
         $model = config('mediatheque.models.Document', 'Folklore\EloquentMediatheque\Models\Document');
         $this->syncMorph($model, 'documentable', 'documents', $items);
