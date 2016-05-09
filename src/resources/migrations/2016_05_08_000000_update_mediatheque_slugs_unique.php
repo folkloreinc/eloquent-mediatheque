@@ -15,29 +15,35 @@ class UpdateMediathequeSlugsUnique extends Migration {
 		$tables = ['pictures', 'videos', 'texts', 'metadatas', 'documents'];
 		foreach($tables as $table)
 		{
-			$tableName = config('mediatheque.table_prefix').$table;
-			Schema::table($tableName, function(Blueprint $table) use ($tableName)
+			try {
+				$tableName = config('mediatheque.table_prefix').$table;
+				Schema::table($tableName, function(Blueprint $table) use ($tableName)
+				{
+					//Drop unique
+					$uniqueName = $tableName.'_slug_unique';
+					$uniqueExists = DB::select(
+						DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$uniqueName.'"')
+					);
+					if($uniqueExists)
+					{
+					    $table->dropUnique($uniqueName);
+					}
+					
+					//Add index
+					$indexName = $tableName.'_slug_index';
+					$indexExists = DB::select(
+						DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$indexName.'"')
+					);
+					if(!$indexExists)
+					{
+					    $table->index('slug');
+					}
+				});
+			}
+			catch(Exception $e)
 			{
-				//Drop unique
-				$uniqueName = $tableName.'_slug_unique';
-				$uniqueExists = DB::select(
-					DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$uniqueName.'"')
-				);
-				if($uniqueExists)
-				{
-				    $table->dropUnique($uniqueName);
-				}
 				
-				//Add index
-				$indexName = $tableName.'_slug_index';
-				$indexExists = DB::select(
-					DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$indexName.'"')
-				);
-				if(!$indexExists)
-				{
-				    $table->index('slug');
-				}
-			});
+			}
 		}
 	}
 
@@ -51,29 +57,36 @@ class UpdateMediathequeSlugsUnique extends Migration {
 		$tables = ['pictures', 'videos', 'texts', 'metadatas', 'documents'];
 		foreach($tables as $table)
 		{
-			$tableName = config('mediatheque.table_prefix').$table;
-			Schema::table($tableName, function(Blueprint $table) use ($tableName)
+			try
 			{
-				//Add unique
-				$uniqueName = $tableName.'_slug_unique';
-				$uniqueExists = DB::select(
-					DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$uniqueName.'"')
-				);
-				if(!$uniqueExists)
+				$tableName = config('mediatheque.table_prefix').$table;
+				Schema::table($tableName, function(Blueprint $table) use ($tableName)
 				{
-				    $table->unique('slug');
-				}
+					//Add unique
+					$uniqueName = $tableName.'_slug_unique';
+					$uniqueExists = DB::select(
+						DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$uniqueName.'"')
+					);
+					if(!$uniqueExists)
+					{
+					    $table->unique('slug');
+					}
+					
+					//Drop index
+					$indexName = $tableName.'_slug_index';
+					$indexExists = DB::select(
+						DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$indexName.'"')
+					);
+					if($indexExists)
+					{
+					    $table->dropIndex($indexName);
+					}
+				});
+			}
+			catch(Exception $e)
+			{
 				
-				//Drop index
-				$indexName = $tableName.'_slug_index';
-				$indexExists = DB::select(
-					DB::raw('SHOW KEYS FROM '.$tableName.' WHERE Key_name="'.$indexName.'"')
-				);
-				if($indexExists)
-				{
-				    $table->dropIndex($indexName);
-				}
-			});
+			}
 		}
 	}
 
