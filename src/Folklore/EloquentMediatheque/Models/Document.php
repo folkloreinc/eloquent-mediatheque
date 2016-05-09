@@ -2,23 +2,21 @@
 
 use Folklore\EloquentMediatheque\Traits\WritableTrait;
 use Folklore\EloquentMediatheque\Traits\PicturableTrait;
-use Folklore\EloquentMediatheque\Traits\SizeableTrait;
-use Folklore\EloquentMediatheque\Traits\TimeableTrait;
 use Folklore\EloquentMediatheque\Traits\FileableTrait;
 use Folklore\EloquentMediatheque\Traits\UploadableTrait;
 use Folklore\EloquentMediatheque\Traits\LinkableTrait;
-use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
-use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
+use Folklore\EloquentMediatheque\Traits\PaginableTrait;
+use Folklore\EloquentMediatheque\Interfaces\PaginableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface {
+class Document extends Model implements SluggableInterface, PaginableInterface {
     
-    use WritableTrait, PicturableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
+    use WritableTrait, PicturableTrait, PaginableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
 
-    protected $table = 'videos';
+    protected $table = 'documents';
     
-    public $mediatheque_type = 'video';
+    public $mediatheque_type = 'document';
 
     protected $guarded = array();
     protected $fillable = array(
@@ -29,9 +27,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         'filename',
         'mime',
         'size',
-        'width',
-        'height',
-        'duration'
+        'pages'
     );
     
     protected $sluggable = array(
@@ -45,14 +41,11 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     );
     
     /**
-     * Fileable
+     * Paginable
      */
-    public static function getSizeFromFile($path)
+    public static function getPagesFromFile($path)
     {
-        return array(
-            'width' => 0,
-            'height' => 0
-        );
+        return 0;
     }
     
     /**

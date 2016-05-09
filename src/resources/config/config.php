@@ -12,7 +12,8 @@ return array(
 		'Audio' => \Folklore\EloquentMediatheque\Models\Audio::class,
 		'Video' => \Folklore\EloquentMediatheque\Models\Video::class,
 		'Text' => \Folklore\EloquentMediatheque\Models\Text::class,
-		'Metadata' => \Folklore\EloquentMediatheque\Models\Metadata::class
+		'Metadata' => \Folklore\EloquentMediatheque\Models\Metadata::class,
+		'Document' => \Folklore\EloquentMediatheque\Models\Document::class,
 		
 	),
     
@@ -54,7 +55,10 @@ return array(
 			'audio/wav' => 'wav',
 			'audio/x-wav' => 'wav',
 			'audio/mpeg' => 'mp3',
-			'audio/mp3' => 'mp3'
+			'audio/mp3' => 'mp3',
+	        
+	        //Document
+			'application/pdf' => 'pdf'
 		)
 		
 	),
