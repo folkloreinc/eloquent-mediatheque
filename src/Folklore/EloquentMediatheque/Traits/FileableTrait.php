@@ -123,7 +123,7 @@ trait FileableTrait {
         //Get duration
         if($this instanceof TimeableInterface)
         {
-            $duration = static::getSizeFromFile($file);
+            $duration = static::getDurationFromFile($file);
             $file['duration'] = $duration;
         }
         
