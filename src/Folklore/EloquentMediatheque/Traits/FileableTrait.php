@@ -128,7 +128,7 @@ trait FileableTrait {
         $file['basename'] = basename($destinationPath.'/'.$file['filename']);
         
         //Save file
-        $this->saveFile($path, $file);
+        $file = $this->saveFile($path, $file);
 
         //Model data
         $modelData = array();
@@ -257,6 +257,8 @@ trait FileableTrait {
     		//Move file
             copy($path, $file['folder'].'/'.$file['basename']);
         }
+        
+        return $file;
     }
     
     protected function parseFileableDestination($path, $replaces)
