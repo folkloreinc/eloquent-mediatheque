@@ -6,6 +6,11 @@ return array(
 	
 	'table_prefix' => 'mediatheque_',
 	
+	'ffmpeg' => [
+		'ffmpeg.binaries'  => env('FFMPEG_BIN', '/usr/local/bin/ffmpeg'),
+		'ffprobe.binaries' => env('FFPROBE_BIN', '/usr/local/bin/ffprobe')
+	],
+	
 	'models' => array(
 		
 		'Picture' => \Folklore\EloquentMediatheque\Models\Picture::class,

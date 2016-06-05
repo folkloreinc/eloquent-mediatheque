@@ -12,6 +12,8 @@ use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
+use FFMpeg\FFProbe;
+
 class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface {
     
     use WritableTrait, PicturableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
@@ -49,10 +51,41 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
      */
     public static function getSizeFromFile($path)
     {
+        try {
+            $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
+            $stream = $ffprobe->streams($file['path'])
+                                ->videos()
+                                ->first();
+            $width = $stream->get('width');
+            $height = $stream->get('height');
+        }
+        catch(\Exception $e)
+        {
+            $width = 0;
+            $height = 0;
+        }
+        
         return array(
-            'width' => 0,
-            'height' => 0
+            'width' => $width,
+            'height' => $height
         );
+    }
+    
+    public static function getDurationFromFile($path)
+    {
+        try {
+            $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
+            $stream = $ffprobe->streams($file['path'])
+                        ->videos()
+                        ->first();
+            $duration = $stream->get('duration');
+        }
+        catch(\Exception $e)
+        {
+            $duration = 0;
+        }
+
+        return $duration;
     }
     
     /**

@@ -42,6 +42,26 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     );
     
     /**
+     * Fileable
+     */
+    public static function getDurationFromFile($path)
+    {
+        try {
+            $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
+            $stream = $ffprobe->streams($file['path'])
+                        ->audios()
+                        ->first();
+            $duration = $stream->get('duration');
+        }
+        catch(\Exception $e)
+        {
+            $duration = 0;
+        }
+
+        return $duration;
+    }
+    
+    /**
      * Query scopes
      */
     public function scopeSearch($query, $text)

@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use GuzzleHttp\Client as GuzzleClient;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
+use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
 
 trait FileableTrait {
     
@@ -106,6 +107,13 @@ trait FileableTrait {
             $file['height'] = $size['height'];
         }
         
+        //Get duration
+        if($this instanceof TimeableInterface)
+        {
+            $duration = static::getSizeFromFile($path);
+            $file['duration'] = $duration;
+        }
+        
         //Save to get id
         if(!$this->id)
         {
@@ -143,6 +151,13 @@ trait FileableTrait {
             if(isset($file['height']))
             {
                 $modelData[$this->getHeightColumnName()] = $file['height'];
+            }
+        }
+        if($this instanceof TimeableInterface)
+        {
+            if(isset($file['duration']))
+            {
+                $modelData[$this->getDurationColumnName()] = $file['duration'];
             }
         }
         
