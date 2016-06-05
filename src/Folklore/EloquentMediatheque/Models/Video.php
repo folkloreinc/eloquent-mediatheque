@@ -53,7 +53,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     {
         try {
             $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
-            $stream = $ffprobe->streams($file['path'])
+            $stream = $ffprobe->streams($file['tmp_path'])
                                 ->videos()
                                 ->first();
             $width = $stream->get('width');
@@ -75,7 +75,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     {
         try {
             $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
-            $stream = $ffprobe->streams($file['path'])
+            $stream = $ffprobe->streams($file['tmp_path'])
                         ->videos()
                         ->first();
             $duration = $stream->get('duration');
