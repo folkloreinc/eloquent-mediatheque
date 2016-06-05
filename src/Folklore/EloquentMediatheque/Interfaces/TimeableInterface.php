@@ -9,4 +9,6 @@ interface TimeableInterface {
     public function getDurationColumnName();
 
     public function getDuration();
+    
+    public static function getDurationFromFile($path);
 }

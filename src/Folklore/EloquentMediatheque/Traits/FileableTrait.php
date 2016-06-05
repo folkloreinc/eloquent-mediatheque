@@ -99,21 +99,6 @@ trait FileableTrait {
         $defaultFile['extension'] = isset($extensions[$defaultFile['mime']]) ? $extensions[$defaultFile['mime']]:$extension;
         $file = array_merge($defaultFile, $file);
         
-        //Get size
-        if($this instanceof SizeableInterface)
-        {
-            $size = static::getSizeFromFile($path);
-            $file['width'] = $size['width'];
-            $file['height'] = $size['height'];
-        }
-        
-        //Get duration
-        if($this instanceof TimeableInterface)
-        {
-            $duration = static::getSizeFromFile($path);
-            $file['duration'] = $duration;
-        }
-        
         //Save to get id
         if(!$this->id)
         {
@@ -126,6 +111,21 @@ trait FileableTrait {
         $file['filename'] = $this->parseFileableDestination($destination, $replaces);
         $file['folder'] = dirname($destinationPath.'/'.$file['filename']);
         $file['basename'] = basename($destinationPath.'/'.$file['filename']);
+        
+        //Get size
+        if($this instanceof SizeableInterface)
+        {
+            $size = static::getSizeFromFile($file);
+            $file['width'] = $size['width'];
+            $file['height'] = $size['height'];
+        }
+        
+        //Get duration
+        if($this instanceof TimeableInterface)
+        {
+            $duration = static::getSizeFromFile($file);
+            $file['duration'] = $duration;
+        }
         
         //Save file
         $file = $this->saveFile($path, $file);

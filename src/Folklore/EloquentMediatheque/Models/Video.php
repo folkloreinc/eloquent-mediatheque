@@ -49,7 +49,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     /**
      * Fileable
      */
-    public static function getSizeFromFile($path)
+    public static function getSizeFromFile($file)
     {
         try {
             $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
@@ -71,7 +71,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         );
     }
     
-    public static function getDurationFromFile($path)
+    public static function getDurationFromFile($file)
     {
         try {
             $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
