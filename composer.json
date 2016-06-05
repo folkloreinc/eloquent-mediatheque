@@ -22,7 +22,8 @@
         "illuminate/support": "5.2.*",
         "guzzlehttp/guzzle": "~5.3|~6.0",
         "cviebrock/eloquent-sluggable": "~3.0",
-        "php-ffmpeg/php-ffmpeg": "~0.5"
+        "php-ffmpeg/php-ffmpeg": "~0.5",
+        "doctrine/dbal": "^2.5"
     },
     "autoload": {
         "classmap": [],
