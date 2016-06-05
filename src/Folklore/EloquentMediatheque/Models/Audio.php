@@ -73,14 +73,4 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
 		});
         return $query;
     }
-    
-    
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return $this->mediatheque_type;
-    }
 }

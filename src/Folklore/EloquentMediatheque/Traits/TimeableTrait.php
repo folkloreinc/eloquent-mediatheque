@@ -1,14 +1,12 @@
 <?php namespace Folklore\EloquentMediatheque\Traits;
 
 trait TimeableTrait {
-
-    protected $timeable_columns = array(
-        'duration' => 'duration'
-    );
     
     public function getTimeableColumns()
     {
-        return $this->timeable_columns;
+        return $this->timeable_columns ? $this->timeable_columns:[
+            'duration' => 'duration'
+        ];
     }
     
     public function setTimeableColumns($columns)
@@ -18,7 +16,8 @@ trait TimeableTrait {
     
     public function getDurationColumnName()
     {
-        return $this->timeable_columns['duration'];
+        $columns = $this->getTimeableColumns();
+        return $columns['duration'];
     }
 
     public function getDuration()

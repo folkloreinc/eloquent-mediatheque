@@ -70,11 +70,6 @@ class Metadata extends Model {
         }
     }
     
-    protected function getMediathequeTypeAttribute()
-    {
-        return $this->mediatheque_type;
-    }
-    
     /**
      * Query scopes
      */

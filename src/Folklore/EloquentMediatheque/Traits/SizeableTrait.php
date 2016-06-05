@@ -2,14 +2,12 @@
 
 trait SizeableTrait {
 
-    protected $sizeable_columns = array(
-        'width' => 'width',
-        'height' => 'height'
-    );
-    
     public function getSizeableColumns()
     {
-        return $this->sizeable_columns;
+        return $this->sizeable_columns ? $this->sizeable_columns:[
+            'width' => 'width',
+            'height' => 'height'
+        ];
     }
     
     public function setSizeableColumns($columns)
@@ -19,12 +17,14 @@ trait SizeableTrait {
     
     public function getWidthColumnName()
     {
-        return $this->sizeable_columns['width'];
+        $columns = $this->getSizeableColumns();
+        return $columns['width'];
     }
     
     public function getHeightColumnName()
     {
-        return $this->sizeable_columns['height'];
+        $columns = $this->getSizeableColumns();
+        return $columns['height'];
     }
 
     public function getWidth()

@@ -60,12 +60,4 @@ class Document extends Model implements SluggableInterface, PaginableInterface {
 		});
         return $query;
     }
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return $this->mediatheque_type;
-    }
 }

@@ -7,16 +7,14 @@ use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
 
 trait FileableTrait {
     
-    protected $fileable_columns = [
-        'filename' => 'filename',
-        'original' => 'name',
-        'mime' => 'mime',
-        'size' => 'size'
-    ];
-    
     public function getFileableColumns()
     {
-        return $this->fileable_columns;
+        return $this->fileable_columns ? $this->fileable_columns:[
+            'filename' => 'filename',
+            'original' => 'name',
+            'mime' => 'mime',
+            'size' => 'size'
+        ];
     }
     
     public function getFileableDestination()

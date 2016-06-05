@@ -81,14 +81,6 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
 		});
         return $query;
     }
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return $this->mediatheque_type;
-    }
 
 
 }

@@ -2,8 +2,11 @@
 
 trait FilmableTrait {
 
-    protected $filmable_order = true;
-
+    protected function getFilmableOrder()
+    {
+        return $this->filmable_order ? true:false;
+    }
+    
     /*
      *
      * Relationships
@@ -19,7 +22,7 @@ trait FilmableTrait {
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
 
-        if($this->filmable_order)
+        if($this->getFilmableOrder())
         {
             $query->orderBy('filmable_order','asc');
         }

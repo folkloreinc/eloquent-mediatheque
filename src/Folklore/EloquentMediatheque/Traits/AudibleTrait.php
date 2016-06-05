@@ -2,8 +2,10 @@
 
 trait AudibleTrait {
 
-    protected $audible_order = true;
-
+    protected function getAudibleOrder()
+    {
+        return $this->audible_order ? true:false;
+    }
     /*
      *
      * Relationships
@@ -19,7 +21,7 @@ trait AudibleTrait {
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
 
-        if($this->audible_order)
+        if($this->getAudibleOrder())
         {
             $query->orderBy('audible_order','asc');
         }

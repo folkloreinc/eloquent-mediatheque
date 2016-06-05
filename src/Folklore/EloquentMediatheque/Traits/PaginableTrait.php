@@ -2,13 +2,11 @@
 
 trait PaginableTrait {
 
-    protected $paginable_columns = array(
-        'pages' => 'pages'
-    );
-    
     public function getPaginableColumns()
     {
-        return $this->paginable_columns;
+        return $this->paginable_columns ? $this->paginable_columns:[
+            'pages' => 'pages'
+        ];
     }
     
     public function setPaginableColumns($columns)
@@ -18,7 +16,8 @@ trait PaginableTrait {
     
     public function getPagesColumnName()
     {
-        return $this->paginable_columns['pages'];
+        $columns = $this->paginable_columns;
+        return $columns['pages'];
     }
 
     public function getPages()

@@ -2,7 +2,10 @@
 
 trait DocumentableTrait {
 
-    protected $documentable_order = true;
+    protected function getDocumentableOrder()
+    {
+        return $this->documentable_order ? true:false;
+    }
 
     /*
      *
@@ -19,7 +22,7 @@ trait DocumentableTrait {
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
 
-        if($this->documentable_order)
+        if($this->getDocumentableOrder())
         {
             $query->orderBy('documentable_order','asc');
         }

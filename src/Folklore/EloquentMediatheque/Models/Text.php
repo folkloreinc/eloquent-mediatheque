@@ -79,12 +79,4 @@ class Text extends Model {
         
         return $query;
     }
-    
-    /**
-     * Accessors and mutators
-     */
-    protected function getMediathequeTypeAttribute()
-    {
-        return $this->mediatheque_type;
-    }
 }

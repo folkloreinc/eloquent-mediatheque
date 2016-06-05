@@ -2,7 +2,10 @@
 
 trait PicturableTrait {
 
-    protected $picturable_order = true;
+    protected function getPicturableOrder()
+    {
+        return $this->picturable_order ? true:false;
+    }
 
     /*
      *
@@ -19,7 +22,7 @@ trait PicturableTrait {
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
 
-        if($this->picturable_order)
+        if($this->getPicturableOrder())
         {
             $query->orderBy('picturable_order','asc');
         }

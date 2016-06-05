@@ -2,7 +2,10 @@
 
 trait WritableTrait {
 
-    protected $writable_order = true;
+    protected function getWritableOrder()
+    {
+        return $this->writable_order ? true:false;
+    }
 
     /*
      *
@@ -19,7 +22,7 @@ trait WritableTrait {
                         ->withTimestamps()
                         ->withPivot($morphName.'_position', $morphName.'_order');
 
-        if($this->writable_order)
+        if($this->getWritableOrder())
         {
             $query->orderBy('writable_order','asc');
         }
