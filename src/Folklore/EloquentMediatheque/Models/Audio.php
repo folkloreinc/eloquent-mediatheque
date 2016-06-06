@@ -93,7 +93,6 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         
         if($return !== 0)
         {
-            dd(implode(' ', $command));
             return null;
         }
         
