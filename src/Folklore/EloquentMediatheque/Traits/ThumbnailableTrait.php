@@ -49,6 +49,8 @@ trait ThumbnailableTrait {
         {
             $this->pictures()->save($thumbnail['model'], $thumbnail['pivot']);
         }
+        
+        $this->load('pictures');
     }
     
     public function createThumbnail($file, $i, $count)
