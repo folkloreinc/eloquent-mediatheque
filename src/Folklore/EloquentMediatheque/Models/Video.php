@@ -111,7 +111,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         $durationSteps = $duration/$count;
         $durationMiddle = $durationSteps/2;
         $time = ($durationSteps * $i) + $durationMiddle;
-        $path = $file['tmp_path'].'-'.$i.'.jpg';
+        $path = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'thumbnail');
         $video->frame(TimeCode::fromSeconds($time))
             ->save($path);
         

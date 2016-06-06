@@ -11,7 +11,7 @@ return array(
 			'ffmpeg.binaries'  => env('FFMPEG_BIN', '/usr/local/bin/ffmpeg'),
 			'ffprobe.binaries' => env('FFPROBE_BIN', '/usr/local/bin/ffprobe')
 		],
-		'audiowaveworm' => [
+		'audiowaveform' => [
 			'bin'  => env('AUDIOWAVEFORM_BIN', '/usr/local/bin/audiowaveform')
 		]
 	],
