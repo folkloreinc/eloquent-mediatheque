@@ -62,6 +62,13 @@ return array(
 			'audio/mpeg' => 'mp3',
 			'audio/mp3' => 'mp3',
 	        
+	        //Video
+			'video/quicktime' => 'mov',
+			'video/mp4' => 'mp4',
+			'video/webm' => 'webm',
+			'video/ogv' => 'ogv',
+			'video/avi' => 'avi',
+	        
 	        //Document
 			'application/pdf' => 'pdf'
 		)
