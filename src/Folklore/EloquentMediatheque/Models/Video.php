@@ -96,7 +96,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     {
         try {
             $ffmpeg = FFMpeg::create(config('mediatheque.programs.ffmpeg'));
-            $video = $ffmpeg->open($file['path']);
+            $video = $ffmpeg->open($file['tmp_path']);
         }
         catch(\Exception $e)
         {
@@ -111,7 +111,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         $durationSteps = $duration/$count;
         $durationMiddle = $durationSteps/2;
         $time = ($durationSteps * $i) + $durationMiddle;
-        $path = $file['tmp_name'].'-'.$i.'.jpg';
+        $path = $file['tmp_path'].'-'.$i.'.jpg';
         $video->frame(TimeCode::fromSeconds($time))
             ->save($path);
         

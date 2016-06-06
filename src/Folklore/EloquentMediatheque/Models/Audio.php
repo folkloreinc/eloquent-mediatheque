@@ -13,6 +13,10 @@ use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
+use FFMpeg\FFProbe;
+use FFMpeg\FFMpeg;
+use FFMpeg\Coordinate\TimeCode;
+
 class Audio extends Model implements SluggableInterface, FileableInterface, TimeableInterface, ThumbnailableInterface {
     
     use WritableTrait, PicturableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait, ThumbnailableTrait;
