@@ -4,6 +4,7 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use GuzzleHttp\Client as GuzzleClient;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
+use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
 
 trait FileableTrait {
     
