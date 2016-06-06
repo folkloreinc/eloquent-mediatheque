@@ -69,8 +69,11 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     
     public static function createThumbnailFromFile($file, $i, $count)
     {
-        $audioPath = $file['tmp_path'];
-        $waveformPath = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'thumbnail');
+        $tmpPath = $file['tmp_path'];
+        $audioPath = $tmpPath.'.'.$file['extension'];
+        copy($tmpPath, $audioPath);
+        
+        $waveformPath = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'thumbnail').'.png';
         $command = [];
         $command[] = config('mediatheque.programs.audiowaveform.bin', '/usr/local/bin/audiowaveform');
         $command[] = '-i '.escapeshellarg($audioPath);
@@ -86,8 +89,11 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         $return = 0;
         exec(implode(' ', $command), $output, $return);
         
+        unlink($audioPath);
+        
         if($return !== 0)
         {
+            dd(implode(' ', $command));
             return null;
         }
         
