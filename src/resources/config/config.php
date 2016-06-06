@@ -6,17 +6,6 @@ return array(
 	
 	'table_prefix' => 'mediatheque_',
 	
-	'programs' => [
-		'ffmpeg' => [
-			'ffmpeg.binaries'  => env('FFMPEG_BIN', '/usr/local/bin/ffmpeg'),
-			'ffprobe.binaries' => env('FFPROBE_BIN', '/usr/local/bin/ffprobe')
-		],
-		'audiowaveform' => [
-			'bin'  => env('AUDIOWAVEFORM_BIN', '/usr/local/bin/audiowaveform')
-		]
-	],
-	
-	
 	'models' => array(
 		
 		'Picture' => \Folklore\EloquentMediatheque\Models\Picture::class,
@@ -27,6 +16,16 @@ return array(
 		'Document' => \Folklore\EloquentMediatheque\Models\Document::class,
 		
 	),
+	
+	'programs' => [
+		'ffmpeg' => [
+			'ffmpeg.binaries'  => env('FFMPEG_BIN', '/usr/local/bin/ffmpeg'),
+			'ffprobe.binaries' => env('FFPROBE_BIN', '/usr/local/bin/ffprobe')
+		],
+		'audiowaveform' => [
+			'bin'  => env('AUDIOWAVEFORM_BIN', '/usr/local/bin/audiowaveform')
+		]
+	],
     
 	'uploadable' => array(
 		
