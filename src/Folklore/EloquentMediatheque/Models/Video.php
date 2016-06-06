@@ -7,16 +7,20 @@ use Folklore\EloquentMediatheque\Traits\TimeableTrait;
 use Folklore\EloquentMediatheque\Traits\FileableTrait;
 use Folklore\EloquentMediatheque\Traits\UploadableTrait;
 use Folklore\EloquentMediatheque\Traits\LinkableTrait;
+use Folklore\EloquentMediatheque\Traits\ThumbnailableTrait;
 use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
+use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
 use FFMpeg\FFProbe;
+use FFMpeg\FFMpeg;
+use FFMpeg\Coordinate\TimeCode;
 
-class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface {
+class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface, ThumbnailableInterface {
     
-    use WritableTrait, PicturableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait;
+    use WritableTrait, PicturableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait, ThumbnailableTrait;
 
     protected $table = 'videos';
     
@@ -37,7 +41,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     );
     
     protected $sluggable = array(
-        'build_from' => 'mediatheque_type',
+        'build_from' => array('name', 'mediatheque_type'),
         'save_to' => 'slug'
     );
     
@@ -52,7 +56,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     public static function getSizeFromFile($file)
     {
         try {
-            $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
+            $ffprobe = FFProbe::create(config('mediatheque.programs.ffmpeg'));
             $stream = $ffprobe->streams($file['tmp_path'])
                                 ->videos()
                                 ->first();
@@ -74,7 +78,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     public static function getDurationFromFile($file)
     {
         try {
-            $ffprobe = FFProbe::create(config('mediatheque.ffmpeg'));
+            $ffprobe = FFProbe::create(config('mediatheque.programs.ffmpeg'));
             $stream = $ffprobe->streams($file['tmp_path'])
                         ->videos()
                         ->first();
@@ -86,6 +90,32 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         }
 
         return $duration;
+    }
+    
+    public static function createThumbnailFromFile($file, $i, $count)
+    {
+        try {
+            $ffmpeg = FFMpeg::create(config('mediatheque.programs.ffmpeg'));
+            $video = $ffmpeg->open($file['path']);
+        }
+        catch(\Exception $e)
+        {
+            throw new \Exception($e->getMessage());
+        }
+        
+        $duration = array_get($file, 'duration', null);
+        if($duration === null)
+        {
+            $duration = self::getDurationFromFile($file);
+        }
+        $durationSteps = $duration/$count;
+        $durationMiddle = $durationSteps/2;
+        $time = ($durationSteps * $i) + $durationMiddle;
+        $path = $file['tmp_name'].'-'.$i.'.jpg';
+        $video->frame(TimeCode::fromSeconds($time))
+            ->save($path);
+        
+        return $path;
     }
     
     /**

@@ -35,7 +35,7 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
     );
     
     protected $sluggable = array(
-        'build_from' => 'mediatheque_type',
+        'build_from' => array('name', 'mediatheque_type'),
         'save_to'    => 'slug',
     );
     

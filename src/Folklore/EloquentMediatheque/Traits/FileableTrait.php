@@ -166,6 +166,11 @@ trait FileableTrait {
         }
         $this->save();
         
+        //Update thumbnails
+        if($this instanceof ThumbnailableInterface)
+        {
+            $this->updateThumbnails($file);
+        }
         
         //Delete original file
         if($deleteOriginalFile && file_exists($path))

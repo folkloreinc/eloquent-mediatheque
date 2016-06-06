@@ -31,7 +31,7 @@ class Document extends Model implements SluggableInterface, PaginableInterface {
     );
     
     protected $sluggable = array(
-        'build_from' => 'mediatheque_type',
+        'build_from' => array('name', 'mediatheque_type'),
         'save_to' => 'slug'
     );
     
