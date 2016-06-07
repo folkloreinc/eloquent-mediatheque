@@ -10,5 +10,5 @@ interface TimeableInterface {
 
     public function getDuration();
     
-    public static function getDurationFromFile($path);
+    public static function getDurationFromFile($file);
 }

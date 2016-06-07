@@ -43,38 +43,66 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
     );
     
     /**
-     * Fileable
+     * Pageable
      */
-    public static function getPagesFromFile($path)
+    public static function getPagesFromFile($file)
     {
         if(class_exists(\Imagick::class))
         {
             $image = new \Imagick();
-            $image->pingImage($path);
+            $image->pingImage($file['tmp_path']);
             return $image->getNumberImages();
         }
         
         return 0;
     }
     
-    public function getThumbnailCount()
-    {
-        return $this->pages || 1;
-    }
-    
+    /**
+     * Thumbnailable
+     */
     public static function createThumbnailFromFile($file, $i, $count)
     {
         try {
-            $path = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'thumbnail');
-            $image = new \Imagick($file['tmp_path'].'['.$i.']');
-            $image->setImageFormat('jpg');
+            $resolution = config('mediatheque.thumbnailable.document.resolution', 150);
+            $format = config('mediatheque.thumbnailable.document.format', 'jpeg');
+            $quality = config('mediatheque.thumbnailable.document.quality', 100);
+            $backgroundColor = config('mediatheque.thumbnailable.document.background', 'white');
+            $font = config('mediatheque.thumbnailable.document.font', __DIR__.'/../../../resources/fonts/arial.ttf');
+            
+            $path = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail');
+            $image = new \Imagick();
+            $image->setResolution($resolution, $resolution);
+            $image->readImage($file['tmp_path'].'['.$i.']');
+            $image->setImageFormat($format);
+            $image->setImageCompressionQuality($quality);
+            if(!empty($backgroundColor))
+            {
+                $image->setImageBackgroundColor($backgroundColor);
+            }
+            if(!empty($font))
+            {
+                $image->setFont($font);
+            }
             $image->writeImage($path);
+            $image->clear();
+            $image->destroy();
             return $path;
         }
         catch(\Exception $e)
         {
             return null;
         }
+    }
+    
+    public function shouldCreateThumbnail()
+    {
+        return config('mediatheque.thumbnailable.enable', config('mediatheque.thumbnailable.document.enable', true));
+    }
+    
+    public function getThumbnailCount()
+    {
+        $allPages = config('mediatheque.thumbnailable.document.all_pages', true);
+        return $allPages && $this->pages ? $this->pages:1;
     }
     
     /**

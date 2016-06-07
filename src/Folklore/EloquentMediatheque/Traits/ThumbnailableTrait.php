@@ -2,9 +2,9 @@
 
 trait ThumbnailableTrait {
     
-    public function hasThumbnail()
+    public function shouldCreateThumbnail()
     {
-        return true;
+        return config('mediatheque.thumbnailable.enable', true);
     }
     
     public function getThumbnailCount()
@@ -14,7 +14,7 @@ trait ThumbnailableTrait {
     
     public function updateThumbnails($file)
     {
-        if(!$this->hasThumbnail())
+        if(!$this->shouldCreateThumbnail())
         {
             return;
         }

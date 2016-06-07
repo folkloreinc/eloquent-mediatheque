@@ -9,4 +9,6 @@ interface PaginableInterface {
     public function getPagesColumnName();
 
     public function getPages();
+    
+    public static function getPagesFromFile($file);
 }

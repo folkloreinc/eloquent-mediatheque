@@ -5,6 +5,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use Folklore\EloquentMediatheque\Interfaces\SizeableInterface;
 use Folklore\EloquentMediatheque\Interfaces\TimeableInterface;
 use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
+use Folklore\EloquentMediatheque\Interfaces\PaginableInterface;
 
 trait FileableTrait {
     

@@ -20,5 +20,5 @@ interface SizeableInterface {
     
     public function getHeightFromWidth($width);
     
-    public static function getSizeFromFile($path);
+    public static function getSizeFromFile($file);
 }

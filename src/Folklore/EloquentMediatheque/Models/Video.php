@@ -51,7 +51,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     );
     
     /**
-     * Fileable
+     * Sizeable
      */
     public static function getSizeFromFile($file)
     {
@@ -75,6 +75,9 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         );
     }
     
+    /**
+     * Timeable
+     */
     public static function getDurationFromFile($file)
     {
         try {
@@ -92,6 +95,9 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         return $duration;
     }
     
+    /**
+     * Thumbnailable
+     */
     public static function createThumbnailFromFile($file, $i, $count)
     {
         try {
@@ -110,12 +116,23 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         }
         $durationSteps = $duration/$count;
         $durationMiddle = $durationSteps/2;
-        $time = ($durationSteps * $i) + $durationMiddle;
-        $path = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'thumbnail');
+        $inMiddle = config('mediatheque.thumbnailable.video.in_middle', true);
+        $time = ($durationSteps * $i) + ($inMiddle ? $durationMiddle:0);
+        $path = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail');
         $video->frame(TimeCode::fromSeconds($time))
             ->save($path);
         
         return $path;
+    }
+    
+    public function shouldCreateThumbnail()
+    {
+        return config('mediatheque.thumbnailable.enable', config('mediatheque.thumbnailable.video.enable', true));
+    }
+    
+    public function getThumbnailCount()
+    {
+        return isset($this->thumbnail_count) ? $this->thumbnail_count:config('mediatheque.thumbnailable.video.count', 1);
     }
     
     /**

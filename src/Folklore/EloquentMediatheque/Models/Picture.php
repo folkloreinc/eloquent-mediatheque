@@ -60,6 +60,9 @@ class Picture extends Model implements SluggableInterface, FileableInterface, Si
         app('image')->delete($path);
     }
     
+    /**
+     * Sizeable
+     */
     public static function getSizeFromFile($file)
     {
         list($width, $height, $type, $attr) = getimagesize($file['tmp_path']);

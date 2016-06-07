@@ -16,7 +16,7 @@ trait PaginableTrait {
     
     public function getPagesColumnName()
     {
-        $columns = $this->paginable_columns;
+        $columns = $this->getPaginableColumns();
         return $columns['pages'];
     }
 

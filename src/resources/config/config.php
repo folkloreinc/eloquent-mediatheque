@@ -80,6 +80,42 @@ return array(
 		
 	),
 	
+	'thumbnailable' => [
+		
+		'enable' => true,
+		
+		'tmp_path' => sys_get_temp_dir(),
+		
+		'video' => [
+			'enable' => true,
+			'count' => 5,
+			'in_middle' => true
+		],
+		
+		'audio' => [
+			'enable' => true,
+			'zoom' => 600,
+			'width' => 1200,
+			'height' => 400,
+			'axis_label' => false,
+			'background_color' => 'FFFFFF00',
+			'color' => '000000',
+			'border_color' => null,
+			'axis_label_color' => null
+		],
+		
+		'document' => [
+			'enable' => true,
+			'resolution' => 150,
+			'quality' => 100,
+			'background' => 'white',
+			'format' => 'jpeg',
+			'font' => __DIR__.'/../fonts/arial.ttf',
+			'all_pages' => true
+		]
+		
+	],
+	
 	'linkable' => array(
 		
 		'fileable_path' => '/files',

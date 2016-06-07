@@ -48,7 +48,7 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     );
     
     /**
-     * Fileable
+     * Timeable
      */
     public static function getDurationFromFile($file)
     {
@@ -67,23 +67,53 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         return $duration;
     }
     
+    /**
+     * Thumbnailable
+     */
     public static function createThumbnailFromFile($file, $i, $count)
     {
         $tmpPath = $file['tmp_path'];
         $audioPath = $tmpPath.'.'.$file['extension'];
         copy($tmpPath, $audioPath);
         
-        $waveformPath = tempnam(config('mediatheque.fileable.tmp_path', sys_get_temp_dir()), 'thumbnail').'.png';
+        $zoom = config('mediatheque.thumbnailable.audio.zoom', 600);
+        $width = config('mediatheque.thumbnailable.audio.width', 1200);
+        $height = config('mediatheque.thumbnailable.audio.height', 400);
+        $backgroundColor = config('mediatheque.thumbnailable.audio.background_color', 'FFFFFF00');
+        $color = config('mediatheque.thumbnailable.audio.color', '000000');
+        $borderColor = config('mediatheque.thumbnailable.audio.border_color', null);
+        $axisColor = config('mediatheque.thumbnailable.audio.axis_label_color', null);
+        $axisLabel = config('mediatheque.thumbnailable.audio.axis_label', false);
+        
+        $waveformPath = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail').'.png';
         $command = [];
         $command[] = config('mediatheque.programs.audiowaveform.bin', '/usr/local/bin/audiowaveform');
         $command[] = '-i '.escapeshellarg($audioPath);
         $command[] = '-o '.escapeshellarg($waveformPath);
-        $command[] = '-z 600';
-        $command[] = '-w 1200';
-        $command[] = '-h 400';
-        $command[] = '--background-color FFFFFF00';
-        $command[] = '--waveform-color 000000';
-        $command[] = '--no-axis-labels';
+        if(!empty($zoom))
+        {
+            $command[] = '-z '.$zoom;
+        }
+        if(!empty($width))
+        {
+            $command[] = '-w '.$width;
+        }
+        if(!empty($height))
+        {
+            $command[] = '-h '.$height;
+        }
+        $command[] = '--background-color '.$backgroundColor;
+        $command[] = '--waveform-color '.$color;
+        if(!empty($borderColor))
+        {
+            $command[] = '--border-color '.$borderColor;
+        }
+        if(!empty($axisColor))
+        {
+            $command[] = '--axis-label-color '.$axisColor;
+        }
+        $command[] = $axisLabel ? '--with-axis-labels':'--no-axis-labels';
+        
         
         $output = [];
         $return = 0;
@@ -97,6 +127,11 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         }
         
         return $waveformPath;
+    }
+    
+    public function shouldCreateThumbnail()
+    {
+        return config('mediatheque.thumbnailable.enable', config('mediatheque.thumbnailable.audio.enable', true));
     }
     
     /**
