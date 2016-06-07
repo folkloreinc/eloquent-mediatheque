@@ -103,26 +103,26 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         try {
             $ffmpeg = FFMpeg::create(config('mediatheque.programs.ffmpeg'));
             $video = $ffmpeg->open($file['tmp_path']);
+            
+            $duration = array_get($file, 'duration', null);
+            if($duration === null)
+            {
+                $duration = self::getDurationFromFile($file);
+            }
+            $durationSteps = $duration/$count;
+            $durationMiddle = $durationSteps/2;
+            $inMiddle = config('mediatheque.thumbnailable.video.in_middle', true);
+            $time = ($durationSteps * $i) + ($inMiddle ? $durationMiddle:0);
+            $path = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail');
+            $video->frame(TimeCode::fromSeconds($time))
+                ->save($path);
+                
+            return $path;
         }
         catch(\Exception $e)
         {
-            throw new \Exception($e->getMessage());
+            return null;
         }
-        
-        $duration = array_get($file, 'duration', null);
-        if($duration === null)
-        {
-            $duration = self::getDurationFromFile($file);
-        }
-        $durationSteps = $duration/$count;
-        $durationMiddle = $durationSteps/2;
-        $inMiddle = config('mediatheque.thumbnailable.video.in_middle', true);
-        $time = ($durationSteps * $i) + ($inMiddle ? $durationMiddle:0);
-        $path = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail');
-        $video->frame(TimeCode::fromSeconds($time))
-            ->save($path);
-        
-        return $path;
     }
     
     public function shouldCreateThumbnail()

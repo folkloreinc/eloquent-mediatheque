@@ -115,18 +115,24 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         $command[] = $axisLabel ? '--with-axis-labels':'--no-axis-labels';
         
         
-        $output = [];
-        $return = 0;
-        exec(implode(' ', $command), $output, $return);
-        
-        unlink($audioPath);
-        
-        if($return !== 0)
+        try {
+            $output = [];
+            $return = 0;
+            exec(implode(' ', $command), $output, $return);
+            
+            unlink($audioPath);
+            
+            if($return !== 0)
+            {
+                return null;
+            }
+            
+            return $waveformPath;
+        }
+        catch(\Exception $e)
         {
             return null;
         }
-        
-        return $waveformPath;
     }
     
     public function shouldCreateThumbnail()
