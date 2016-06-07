@@ -126,6 +126,13 @@ trait FileableTrait {
             $file['duration'] = $duration;
         }
         
+        //Get pages
+        if($this instanceof PaginableInterface)
+        {
+            $pages = static::getPagesFromFile($file);
+            $file['pages'] = $pages;
+        }
+        
         //Save file
         $file = $this->saveFile($path, $file);
 
@@ -140,24 +147,19 @@ trait FileableTrait {
             }
         }
         
-        //Get size
+        //Update model data from interfaces
         if($this instanceof SizeableInterface)
         {
-            if(isset($file['width']))
-            {
-                $modelData[$this->getWidthColumnName()] = $file['width'];
-            }
-            if(isset($file['height']))
-            {
-                $modelData[$this->getHeightColumnName()] = $file['height'];
-            }
+            $modelData[$this->getWidthColumnName()] = array_get($file, 'width', 0);
+            $modelData[$this->getHeightColumnName()] = array_get($file, 'height', 0);
         }
         if($this instanceof TimeableInterface)
         {
-            if(isset($file['duration']))
-            {
-                $modelData[$this->getDurationColumnName()] = $file['duration'];
-            }
+            $modelData[$this->getDurationColumnName()] = array_get($file, 'duration', 0);
+        }
+        if($this instanceof PaginableInterface)
+        {
+            $modelData[$this->getPagesColumnName()] = array_get($file, 'pages', 0);
         }
         
         //Fill model

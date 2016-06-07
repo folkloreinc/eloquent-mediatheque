@@ -25,6 +25,9 @@
         "php-ffmpeg/php-ffmpeg": "~0.5",
         "doctrine/dbal": "^2.5"
     },
+    "suggested": {
+        "ext-imagick": "For creating thumbnail of PDF"
+    },
     "autoload": {
         "classmap": [],
         "psr-0": {
