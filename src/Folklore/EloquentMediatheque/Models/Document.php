@@ -78,9 +78,12 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
             $font = config('mediatheque.thumbnailable.document.font', __DIR__.'/../../../resources/fonts/arial.ttf');
             
             $path = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail');
+            $pdfPath = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'pdf').'.pdf';
+            copy($file['tmp_path'], $pdfPath);
+            
             $image = new \Imagick();
             $image->setResolution($resolution, $resolution);
-            $image->readImage($file['tmp_path'].'['.$i.']');
+            $image->readImage($pdfPath.'['.$i.']');
             $image->setImageFormat($format);
             $image->setImageCompressionQuality($quality);
             if(!empty($backgroundColor))
@@ -94,6 +97,12 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
             $image->writeImage($path);
             $image->clear();
             $image->destroy();
+            
+            if(file_exists($pdfPath))
+            {
+                unlink($pdfPath);
+            }
+            
             return $path;
         }
         catch(\Exception $e)
