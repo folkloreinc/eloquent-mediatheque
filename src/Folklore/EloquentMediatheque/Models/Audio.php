@@ -17,6 +17,8 @@ use FFMpeg\FFProbe;
 use FFMpeg\FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
 
+use Log;
+
 class Audio extends Model implements SluggableInterface, FileableInterface, TimeableInterface, ThumbnailableInterface {
     
     use WritableTrait, PicturableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait, ThumbnailableTrait;
@@ -61,6 +63,7 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         }
         catch(\Exception $e)
         {
+            Log::error($e);
             $duration = 0;
         }
 
@@ -131,6 +134,7 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
         }
         catch(\Exception $e)
         {
+            Log::error($e);
             return null;
         }
     }

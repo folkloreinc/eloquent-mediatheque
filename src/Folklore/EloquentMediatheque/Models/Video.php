@@ -18,6 +18,8 @@ use FFMpeg\FFProbe;
 use FFMpeg\FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
 
+use Log;
+
 class Video extends Model implements SluggableInterface, TimeableInterface, SizeableInterface, ThumbnailableInterface {
     
     use WritableTrait, PicturableTrait, SizeableTrait, TimeableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait, ThumbnailableTrait;
@@ -65,6 +67,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         }
         catch(\Exception $e)
         {
+            Log::error($e);
             $width = 0;
             $height = 0;
         }
@@ -89,6 +92,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         }
         catch(\Exception $e)
         {
+            Log::error($e);
             $duration = 0;
         }
 
@@ -121,6 +125,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
         }
         catch(\Exception $e)
         {
+            Log::error($e);
             return null;
         }
     }

@@ -12,6 +12,8 @@ use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
+use Log;
+
 class Document extends Model implements SluggableInterface, PaginableInterface, ThumbnailableInterface {
     
     use WritableTrait, PicturableTrait, PaginableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait, ThumbnailableTrait;
@@ -47,11 +49,17 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
      */
     public static function getPagesFromFile($file)
     {
-        if(class_exists(\Imagick::class))
+        try {
+            if(class_exists(\Imagick::class))
+            {
+                $image = new \Imagick();
+                $image->pingImage($file['tmp_path']);
+                return $image->getNumberImages();
+            }
+        }
+        catch(\Exception $e)
         {
-            $image = new \Imagick();
-            $image->pingImage($file['tmp_path']);
-            return $image->getNumberImages();
+            Log::error($e);
         }
         
         return 0;
@@ -90,6 +98,7 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
         }
         catch(\Exception $e)
         {
+            Log::error($e);
             return null;
         }
     }
