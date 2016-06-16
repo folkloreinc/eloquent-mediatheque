@@ -78,30 +78,51 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
             $font = config('mediatheque.thumbnailable.document.font', __DIR__.'/../../../resources/fonts/arial.ttf');
             
             $path = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'thumbnail');
-            $pdfPath = tempnam(config('mediatheque.thumbnailable.tmp_path', sys_get_temp_dir()), 'pdf').'.pdf';
-            copy($file['tmp_path'], $pdfPath);
             
-            $image = new \Imagick();
-            $image->setResolution($resolution, $resolution);
-            $image->readImage($pdfPath.'['.$i.']');
-            $image->setImageFormat($format);
-            $image->setImageCompressionQuality($quality);
-            if(!empty($backgroundColor))
+            // Bug with hhvm converting specific page of pdf
+            // with imagick https://github.com/facebook/hhvm/issues/4771
+            if (defined('HHVM_VERSION'))
             {
-                $image->setImageBackgroundColor($backgroundColor);
+                $command = [];
+                $command[] = config('mediatheque.programs.imagick.convert', '/usr/local/bin/convert');
+                $command[] = '-density '.escapeshellarg($resolution);
+                $command[] = '-quality '.escapeshellarg($quality);
+                $command[] = escapeshellarg($file['tmp_path'].'['.$i.']');
+                $command[] = '-background '.escapeshellarg($backgroundColor);
+                $command[] = '-format '.escapeshellarg($format);
+                $command[] = escapeshellarg($path);
+                
+                $output = [];
+                $return = 0;
+                exec(implode(' ', $command), $output, $return);
+                
+                if($return !== 0)
+                {
+                    Log::error('Return code '.$return.' for: '.implode(' ', $command));
+                    return null;
+                }
             }
-            if(!empty($font))
+            else
             {
-                $image->setFont($font);
+                $image = new \Imagick();
+                $image->setResolution($resolution, $resolution);
+                $image->readImage($file['tmp_path'].'['.$i.']');
+                $image->setImageFormat($format);
+                $image->setImageCompressionQuality($quality);
+                if(!empty($backgroundColor))
+                {
+                    $image->setImageBackgroundColor($backgroundColor);
+                }
+                if(!empty($font))
+                {
+                    $image->setFont($font);
+                }
+                $image->writeImage($path);
+                $image->clear();
+                $image->destroy();
             }
-            $image->writeImage($path);
-            $image->clear();
-            $image->destroy();
             
-            if(file_exists($pdfPath))
-            {
-                unlink($pdfPath);
-            }
+            
             
             return $path;
         }

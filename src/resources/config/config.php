@@ -24,6 +24,9 @@ return array(
 		],
 		'audiowaveform' => [
 			'bin'  => env('AUDIOWAVEFORM_BIN', '/usr/local/bin/audiowaveform')
+		],
+		'imagick' => [
+			'convert'  => env('IMAGICK_CONVERT_BIN', '/usr/local/bin/convert')
 		]
 	],
     
