@@ -135,13 +135,20 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
     
     public function shouldCreateThumbnail()
     {
-        return config('mediatheque.thumbnailable.enable', config('mediatheque.thumbnailable.document.enable', true));
+        return config('mediatheque.thumbnailable.enable', true) && config('mediatheque.thumbnailable.document.enable', true);
     }
     
     public function getThumbnailCount()
     {
-        $allPages = config('mediatheque.thumbnailable.document.all_pages', true);
-        return $allPages && $this->pages ? $this->pages:1;
+        $count = config('mediatheque.thumbnailable.document.count', 'all');
+        if($count === 'all')
+        {
+            return $this->pages ? $this->pages:1;
+        }
+        else
+        {
+            return $count;
+        }
     }
     
     /**

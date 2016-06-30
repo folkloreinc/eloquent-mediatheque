@@ -132,7 +132,7 @@ class Video extends Model implements SluggableInterface, TimeableInterface, Size
     
     public function shouldCreateThumbnail()
     {
-        return config('mediatheque.thumbnailable.enable', config('mediatheque.thumbnailable.video.enable', true));
+        return config('mediatheque.thumbnailable.enable', true) && config('mediatheque.thumbnailable.video.enable', true);
     }
     
     public function getThumbnailCount()

@@ -141,7 +141,7 @@ class Audio extends Model implements SluggableInterface, FileableInterface, Time
     
     public function shouldCreateThumbnail()
     {
-        return config('mediatheque.thumbnailable.enable', config('mediatheque.thumbnailable.audio.enable', true));
+        return config('mediatheque.thumbnailable.enable', true) && config('mediatheque.thumbnailable.audio.enable', true);
     }
     
     /**

@@ -109,12 +109,12 @@ return array(
 		
 		'document' => [
 			'enable' => true,
+			'count' => 'all',
 			'resolution' => 150,
 			'quality' => 100,
 			'background' => 'white',
 			'format' => 'jpeg',
-			'font' => __DIR__.'/../fonts/arial.ttf',
-			'all_pages' => true
+			'font' => __DIR__.'/../fonts/arial.ttf'
 		]
 		
 	],
