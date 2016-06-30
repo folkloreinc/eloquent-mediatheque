@@ -280,12 +280,18 @@ trait FileableTrait {
         $destination = ltrim($path, '/');
         foreach($replaces as $key => $value)
         {
-            if(preg_match('/\{\s+?'.strtolower($key).'\s+?\}/',$destination))
+            if(preg_match_all('/\{\s*'.strtolower($key).'\s*\}/',$destination, $matches))
             {
-                $destination = preg_replace('/\{\s+?'.strtolower($key).'\s+?\}/', $value, $destination);
+                if(sizeof($matches))
+                {
+                    for($i = 0; $i < sizeof($matches[0]); $i++)
+                    {
+                        $destination = str_replace($matches[0][$i], $value, $destination);
+                    }
+                }
             }
         }
-        if(preg_match_all('/\{\s+date\(([^\)]+)\)\s+\}/', $destination, $matches))
+        if(preg_match_all('/\{\s*date\(([^\)]+)\)\s*\}/', $destination, $matches))
         {
             if(sizeof($matches))
             {
@@ -295,6 +301,7 @@ trait FileableTrait {
                 }
             }
         }
+        
         return $destination;
     }
 }
