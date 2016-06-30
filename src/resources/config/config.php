@@ -114,7 +114,7 @@ return array(
 			'quality' => 100,
 			'background' => 'white',
 			'format' => 'jpeg',
-			'font' => __DIR__.'/../fonts/arial.ttf'
+			'font' => storage_path('/mediatheque/fonts/arial.ttf')
 		]
 		
 	],

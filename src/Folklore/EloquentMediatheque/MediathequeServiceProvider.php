@@ -22,6 +22,7 @@ class MediathequeServiceProvider extends ServiceProvider {
 	{
 		$configPath = __DIR__.'/../../resources/config/config.php';
 		$migrationsPath = __DIR__.'/../../resources/migrations/';
+		$fontsPath = __DIR__.'/../../resources/fonts/';
 		
 		$this->mergeConfigFrom($configPath, 'mediatheque');
 		
@@ -32,6 +33,10 @@ class MediathequeServiceProvider extends ServiceProvider {
 		$this->publishes([
 	        $migrationsPath => database_path('/migrations')
 	    ], 'migrations');
+		
+		$this->publishes([
+	        $fontsPath => storage_path('/mediatheque/fonts')
+	    ], 'fonts');
 	}
 
 	/**
