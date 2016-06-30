@@ -38,7 +38,7 @@ return array(
 	
 	'fileable' => array(
 		
-		'destination' => '{type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}',
+		'destination' => '{mediatheque_type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}',
 		
 		'filesystem' => null,
 	

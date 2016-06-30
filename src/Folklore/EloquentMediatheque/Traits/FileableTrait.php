@@ -21,7 +21,14 @@ trait FileableTrait {
     
     public function getFileableDestination()
     {
-        return config('mediatheque.fileable.destination', '{type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}');
+        return config('mediatheque.fileable.destination', '{mediatheque_type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}');
+    }
+    
+    public function getFileableDestinationReplaces($file)
+    {
+        return array_merge([
+            'mediatheque_type' => $this->mediatheque_type
+        ], $this->toArray(), $file);
     }
     
     public function setFileableColumns($columns)
@@ -106,7 +113,7 @@ trait FileableTrait {
         }
 
 		//Get destination
-        $replaces = array_merge($this->toArray(),$file);
+        $replaces = $this->getFileableDestinationReplaces($file);
         $destination = $this->getFileableDestination();
         $file['filename'] = $this->parseFileableDestination($destination, $replaces);
         $file['folder'] = dirname($destinationPath.'/'.$file['filename']);
@@ -273,12 +280,12 @@ trait FileableTrait {
         $destination = ltrim($path, '/');
         foreach($replaces as $key => $value)
         {
-            if(preg_match('/\{'.strtolower($key).'\}/',$destination))
+            if(preg_match('/\{\s+?'.strtolower($key).'\s+?\}/',$destination))
             {
-                $destination = str_replace('{'.strtolower($key).'}', $value, $destination);
+                $destination = preg_replace('/\{\s+?'.strtolower($key).'\s+?\}/', $value, $destination);
             }
         }
-        if(preg_match_all('/\{date\(([^\)]+)\)\}/', $destination, $matches))
+        if(preg_match_all('/\{\s+date\(([^\)]+)\)\s+\}/', $destination, $matches))
         {
             if(sizeof($matches))
             {
