@@ -9,12 +9,13 @@ use Folklore\EloquentMediatheque\Traits\PaginableTrait;
 use Folklore\EloquentMediatheque\Traits\ThumbnailableTrait;
 use Folklore\EloquentMediatheque\Interfaces\PaginableInterface;
 use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
+use Folklore\EloquentMediatheque\Interfaces\FileableInterface;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
 use Log;
 
-class Document extends Model implements SluggableInterface, PaginableInterface, ThumbnailableInterface {
+class Document extends Model implements SluggableInterface, PaginableInterface, ThumbnailableInterface, FileableInterface {
     
     use WritableTrait, PicturableTrait, PaginableTrait, FileableTrait, UploadableTrait, LinkableTrait, SluggableTrait, ThumbnailableTrait;
 
