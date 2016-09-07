@@ -54,7 +54,9 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
             if(class_exists(\Imagick::class))
             {
                 $image = new \Imagick($file['tmp_path']);
-                return $image->getNumberImages();
+                $pages = $image->getNumberImages();
+                $image->destroy();
+                return $pages;
             }
         }
         catch(\Exception $e)
