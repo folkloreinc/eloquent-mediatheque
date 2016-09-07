@@ -53,8 +53,7 @@ class Document extends Model implements SluggableInterface, PaginableInterface, 
         try {
             if(class_exists(\Imagick::class))
             {
-                $image = new \Imagick();
-                $image->pingImage($file['tmp_path']);
+                $image = new \Imagick($file['tmp_path']);
                 return $image->getNumberImages();
             }
         }
