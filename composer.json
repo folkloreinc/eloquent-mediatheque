@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "illuminate/support": "5.2.*",
+        "illuminate/support": "5.1.*|5.2.*|5.3.*|5.4.*",
         "guzzlehttp/guzzle": "~5.3|~6.0",
         "cviebrock/eloquent-sluggable": "~3.0",
         "php-ffmpeg/php-ffmpeg": "~0.5",
