@@ -8,7 +8,7 @@ use Folklore\EloquentMediatheque\Interfaces\ThumbnailableInterface;
 use Folklore\EloquentMediatheque\Interfaces\PaginableInterface;
 
 trait FileableTrait {
-    
+
     public function getFileableColumns()
     {
         return $this->fileable_columns ? $this->fileable_columns:[
@@ -18,66 +18,71 @@ trait FileableTrait {
             'size' => 'size'
         ];
     }
-    
+
     public function getFileableDestination()
     {
         return config('mediatheque.fileable.destination', '{mediatheque_type}/{date(Y-m-d)}/{id}-{date(his)}.{extension}');
     }
-    
+
     public function getFileableDestinationReplaces($file)
     {
         return array_merge([
             'mediatheque_type' => $this->mediatheque_type
         ], $this->toArray(), $file);
     }
-    
+
     public function setFileableColumns($columns)
     {
         return $this->fileable_columns = $columns;
     }
-    
+
     public function getFilenameColumnName()
     {
         $columns = $this->getFileableColumns();
         return $columns['filename'];
     }
-    
+
     public function getSizeColumnName()
     {
         $columns = $this->getFileableColumns();
         return $columns['size'];
     }
-    
+
     public function getMimeColumnName()
     {
         $columns = $this->getFileableColumns();
         return $columns['mime'];
     }
-    
+
     public function getSize()
     {
         $columnName = $this->getSizeColumnName();
         return $this->{$columnName};
     }
-    
+
     public function getSizeInKB()
     {
         $size = $this->getSize();
         return $size/1024;
     }
-    
+
     public function getSizeInMB()
     {
         $size = $this->getSize();
         return $size/1024/1024;
     }
-    
+
     public function getMime()
     {
         $columnName = $this->getMimeColumnName();
         return $this->{$columnName};
     }
-    
+
+    protected function isRemoteFile($path)
+    {
+        return preg_match('/^(https?\:)?\/\/([^\/]+)/i', $path) !== 0;
+    }
+
     public function setFile($path, $file = array())
     {
         //Get config
@@ -85,17 +90,17 @@ trait FileableTrait {
         $extensions = config('mediatheque.fileable.mime_to_extension');
 		$destinationPath = config('mediatheque.fileable.path');
         $extension = pathinfo(array_get($file, 'original', $path), PATHINFO_EXTENSION);
-        
+
         //Get original file name
         $deleteOriginalFile = config('mediatheque.fileable.delete_original_file', false);
         $original =  basename($path);
-        
+
         //If it's a remote file, download it
-        if(filter_var($path, FILTER_VALIDATE_URL))
+        if($this->isRemoteFile($path))
         {
             $path = $this->downloadFile($path);
         }
-        
+
         //Get file info
         $defaultFile = array();
         $defaultFile['tmp_path'] = $path;
@@ -105,7 +110,7 @@ trait FileableTrait {
         $defaultFile['type'] = explode('/',$defaultFile['mime'])[0];
         $defaultFile['extension'] = isset($extensions[$defaultFile['mime']]) ? $extensions[$defaultFile['mime']]:$extension;
         $file = array_merge($defaultFile, $file);
-        
+
         //Save to get id
         if(!$this->id)
         {
@@ -118,7 +123,7 @@ trait FileableTrait {
         $file['filename'] = $this->parseFileableDestination($destination, $replaces);
         $file['folder'] = dirname($destinationPath.'/'.$file['filename']);
         $file['basename'] = basename($destinationPath.'/'.$file['filename']);
-        
+
         //Get size
         if($this instanceof SizeableInterface)
         {
@@ -126,21 +131,21 @@ trait FileableTrait {
             $file['width'] = $size['width'];
             $file['height'] = $size['height'];
         }
-        
+
         //Get duration
         if($this instanceof TimeableInterface)
         {
             $duration = static::getDurationFromFile($file);
             $file['duration'] = $duration;
         }
-        
+
         //Get pages
         if($this instanceof PaginableInterface)
         {
             $pages = static::getPagesFromFile($file);
             $file['pages'] = $pages;
         }
-        
+
         //Save file
         $file = $this->saveFile($path, $file);
 
@@ -154,7 +159,7 @@ trait FileableTrait {
                 $modelData[$column] = $file[$key];
             }
         }
-        
+
         //Update model data from interfaces
         if($this instanceof SizeableInterface)
         {
@@ -169,20 +174,20 @@ trait FileableTrait {
         {
             $modelData[$this->getPagesColumnName()] = array_get($file, 'pages', 0);
         }
-        
+
         //Fill model
         foreach($modelData as $key => $value)
         {
             $this->{$key} = $value;
         }
         $this->save();
-        
+
         //Update thumbnails
         if($this instanceof ThumbnailableInterface)
         {
             $this->updateThumbnails($file);
         }
-        
+
         //Delete original file
         if($deleteOriginalFile && file_exists($path))
         {
@@ -191,7 +196,7 @@ trait FileableTrait {
 
 		return $this;
     }
-    
+
     public function deleteFileableFile($filename = null)
     {
         if(!$filename) {
@@ -215,9 +220,9 @@ trait FileableTrait {
                 unlink($path);
             }
         }
-        
+
     }
-    
+
     protected function downloadFile($path)
     {
         $deleteOriginalFile = true;
@@ -227,10 +232,10 @@ trait FileableTrait {
             'sink' => $tmpPath
         ]);
         $path = $tmpPath;
-        
+
         return $tmpPath;
     }
-    
+
     protected function getFileableDisk()
     {
         $filesystem = config('mediatheque.fileable.filesystem');
@@ -238,10 +243,10 @@ trait FileableTrait {
         {
             return null;
         }
-        
+
         return $filesystem === 'cloud' ? app('filesystem')->cloud():app('filesystem')->disk($filesystem);
     }
-    
+
     protected function saveFile($path, $file)
     {
         $disk = $this->getFileableDisk();
@@ -271,10 +276,10 @@ trait FileableTrait {
     		//Move file
             copy($path, $file['folder'].'/'.$file['basename']);
         }
-        
+
         return $file;
     }
-    
+
     protected function parseFileableDestination($path, $replaces)
     {
         $destination = ltrim($path, '/');
@@ -301,7 +306,7 @@ trait FileableTrait {
                 }
             }
         }
-        
+
         return $destination;
     }
 }
